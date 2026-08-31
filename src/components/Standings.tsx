@@ -1,47 +1,66 @@
-import { ChevronDown, ChevronRight, Trophy } from "lucide-react";
-import teamLogo from "../assets/images/mainPage/italy.png";
+import { ChevronDown,Trophy } from "lucide-react";
 import draw from "../assets/images/mainPage/draw.avif";
 import lose from "../assets/images/mainPage/lose.svg";
 import win from "../assets/images/mainPage/win.svg";
 
+import englandLogo from "../assets/images/mainPage/england-logo.avif";
+import spainLogo from "../assets/images/mainPage/spain-logo.avif";
+import italyLogo from "../assets/images/mainPage/italy-logo.avif";
+import germanyLogo from "../assets/images/mainPage/germany-logo.avif";
+import franceLogo from "../assets/images/mainPage/france-logo.avif";
+import useStandings from "../hooks/useStandings";
 
-const STANDINGS_DATA = [
-  { id: 1, rank: 1, name: "Chelsea F.C", w: 14, d: 3, l: 1, pts: 35, form: ["W", "W", "W", "W", "D"] },
-  { id: 2, rank: 2, name: "Manchester City", w: 13, d: 3, l: 2, pts: 32, form: ["W", "W", "W", "L", "W"] },
-  { id: 3, rank: 3, name: "Liverpool", w: 13, d: 3, l: 3, pts: 30, form: ["W", "L", "W", "W", "W"] },
-  { id: 4, rank: 4, name: "Manchester United", w: 12, d: 4, l: 3, pts: 28, form: ["L", "W", "W", "W", "W"] },
-  { id: 5, rank: 5, name: "West Ham United", w: 11, d: 4, l: 4, pts: 27, form: ["W", "W", "W", "L", "W"] },
-  { id: 6, rank: 6, name: "Arsenal FC", w: 11, d: 4, l: 6, pts: 25, form: ["L", "W", "W", "L", "W"] },
+const TOP_LEAGUES = [
+  { id: 39, name: "Premier League", country: "England", flag: englandLogo },
+  { id: 140, name: "La Liga", country: "Spain", flag: spainLogo },
+  { id: 135, name: "Serie A", country: "Italy", flag: italyLogo },
+  { id: 78, name: "Bundesliga", country: "Germany", flag: germanyLogo },
+  { id: 61, name: "Ligue 1", country: "France", flag: franceLogo },
 ];
 
-function getResultImage(value: string) {
-  const objOfStyles: Record<string, string> = {
+function getResultImage(value) {
+  const objOfStyles = {
     W: win,
     D: draw,
     L: lose,
   };
-  return objOfStyles[value];
+  return objOfStyles[value] || draw;
 }
 
-function TableRow({ item }: any) {
-  const { rank, name, w, d, l, pts, form } = item;
+function TableRow({ item }) {
+  const { rank, points, form, team: { logo, name }, all: { win: winCount, draw: drawCount, lose: loseCount } } = item;
+  const curForm = [...(form || "")];
 
-  const bgClass = rank > 4 ? "bg-[#FEE6EB]" : "bg-[#F2F0F9]";
+  let bgClass = "bg-gray-50 hover:bg-gray-100";
+
+  if (rank <= 4) {
+    bgClass = "bg-[#F2F0F9] hover:bg-[#EAE7F5]";
+  } else if (rank >= 5 && rank <= 6) {
+    bgClass = "bg-orange-50 hover:bg-orange-100";
+  } else if (rank === 7) {
+    bgClass = "bg-emerald-50 hover:bg-emerald-100";
+  } else if (rank >= 18) {
+    bgClass = "bg-[#FEE6EB] hover:bg-[#FCDADF]";
+  }
 
   return (
     <div
-      className={`grid grid-cols-[30px_minmax(100px,1fr)_1fr_1fr_1fr_1fr] lg:grid-cols-[30px_minmax(100px,2fr)_1fr_1fr_1fr_1fr_2fr] py-4 px-2 items-center rounded-lg ${bgClass}`}
+      className={`grid grid-cols-[30px_minmax(100px,1fr)_1fr_1fr_1fr_1fr] lg:grid-cols-[30px_minmax(100px,2fr)_1fr_1fr_1fr_1fr_2fr] py-4 px-2 items-center rounded-lg transition-colors cursor-pointer ${bgClass}`}
     >
-      <span className="justify-self-start text-black text-[1rem]">{rank}</span>
-      <span className="text-[#636363]">{name}</span>
-      <span className="justify-self-center text-black text-[1rem]">{w}</span>
-      <span className="justify-self-center text-black text-[1rem]">{d}</span>
-      <span className="justify-self-center text-black text-[1rem]">{l}</span>
-      <span className="justify-self-center text-black text-[1rem]">{pts}</span>
+      <span className="justify-self-start text-black text-[1rem] font-medium">{rank}</span>
+      <span className="text-[#636363] flex gap-2 items-center font-medium">
+        <img className="w-6 h-6 object-contain" src={logo} alt={name} />
+        {name}
+      </span>
+      <span className="justify-self-center text-black text-[1rem]">{winCount}</span>
+      <span className="justify-self-center text-black text-[1rem]">{drawCount}</span>
+      <span className="justify-self-center text-black text-[1rem]">{loseCount}</span>
+      <span className="justify-self-center text-black text-[1rem] font-bold">{points}</span>
+
       <span className="hidden lg:flex lg:gap-1.5 text-black justify-self-center text-[1rem]">
-        {form.map((result: string, index: number) => (
+        {curForm.map((result, index) => (
           <span key={`${index}_${result}`}>
-            <img className="w-5 h-5 object-contain" src={getResultImage(result)} alt="result" />
+            <img className="w-5 h-5 object-contain shadow-sm rounded-full" src={getResultImage(result)} alt="result" />
           </span>
         ))}
       </span>
@@ -49,7 +68,32 @@ function TableRow({ item }: any) {
   );
 }
 
+function LayoutOfTable({ arrayOfTeams }) {
+  if (!Array.isArray(arrayOfTeams) || arrayOfTeams.length === 0) {
+    return (
+      <div className="w-full py-12 flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-400 my-2">
+        <span className="text-3xl mb-2">📋</span>
+        <p className="text-sm font-medium text-gray-600">No standings data available</p>
+        <p className="text-xs text-gray-400 mt-1">Standings for this league have not started yet or are unavailable</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full flex flex-col gap-2">
+      {arrayOfTeams.map((item) => (
+        <TableRow key={item.team.id} item={item} />
+      ))}
+    </div>
+  );
+}
+
 export default function Standings() {
+  const { isOpen, setOpen, setLeagueID, curTable } = useStandings();
+
+  const league = curTable?.league;
+  const tableToRender = league?.standings?.[0] || [];
+
   return (
     <section className="w-full bg-white pt-8 mb-12 border-t-[3px] border-[#EFEFEF]">
       <div className="flex items-center gap-2 mb-6">
@@ -58,16 +102,31 @@ export default function Standings() {
       </div>
 
       <div className="flex items-center justify-between mb-6">
-        <button className="flex items-center gap-2 hover:bg-gray-50 py-1 rounded-lg transition-colors">
-          <span className="text-xl">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
-          <img src={teamLogo} alt="League" className="w-6 h-6 object-contain" />
-          <span className="font-semibold text-sm text-gray-900">Premier League</span>
-          <ChevronDown className="w-4 h-4 text-gray-400" />
-        </button>
-        <button className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-900 transition-colors">
-          View All
-          <ChevronRight className="w-4 h-4" />
-        </button>
+        <div className="relative min-w-50">
+          <button onClick={() => setOpen((prev) => !prev)} className="p-1.5 flex gap-1.5 items-center font-medium">
+            {league?.logo && <img className="w-6 h-6 object-contain" src={league.logo} alt={league.name} />}
+            {league?.name || "Select league"}
+            <span className={`transition-transform duration-100 ${isOpen ? "rotate-180" : "rotate-0"}`}><ChevronDown /></span>
+          </button>
+
+          {isOpen && (
+            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-md border border-gray-100 py-1 z-10">
+              {TOP_LEAGUES.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-gray-100 cursor-pointer transition-colors"
+                  onClick={() => {
+                    setLeagueID(item.id);
+                    setOpen(false);
+                  }}
+                >
+                  <img className="w-4 h-4" src={item.flag} alt={item.name} />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="w-full">
@@ -81,11 +140,7 @@ export default function Standings() {
           <span className="hidden lg:block text-black justify-self-center text-[1rem]">LAST MATCHES</span>
         </div>
 
-        <div className="w-full flex flex-col gap-2">
-          {STANDINGS_DATA.map((item) => (
-            <TableRow key={item.id} item={item} />
-          ))}
-        </div>
+        <LayoutOfTable arrayOfTeams={tableToRender} />
       </div>
 
       <div className="flex items-center gap-6 mt-6">

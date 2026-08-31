@@ -1,13 +1,4 @@
-
-
-import {
-    LayoutGrid,
-    MonitorPlay,
-    Trophy,
-    ShoppingBag,
-    Newspaper,
-    ChevronDown,
-} from "lucide-react";
+import { LayoutGrid, MonitorPlay, Trophy, ShoppingBag, Newspaper, ChevronDown, } from "lucide-react";
 import logo from "../assets/images/header/Logo-header.svg";
 
 
