@@ -1,17 +1,13 @@
-import { useContext, useState } from "react";
-import { DataContext } from "../contexts/DataContex";
-
+import { useState } from "react";
+import useRequiredContext from "./useRequiredContext";
+import { DataContext } from "../contexts/DataContext";
 
 export default function useStandings() {
 
     const [isOpen, setOpen] = useState(false);
 
-    const { setLeagueID, setLeagueTables, leagueTables, leagueID, curTable } = useContext(DataContext);
-
-    const curLeague = leagueTables[leagueID];
-
-
-
-    return { isOpen, setOpen, setLeagueID, setLeagueTables, curLeague, leagueTables, curTable };
+    const { setLeagueID, setLeagueTables, leagueTables, curTable } = useRequiredContext(DataContext);
+    
+    return { isOpen, setOpen, setLeagueID, setLeagueTables, leagueTables, curTable };
 
 }

@@ -1,24 +1,26 @@
-import { useContext, useMemo, useState } from "react";
-import { DataContext } from "../contexts/DataContex";
+import { useMemo, useState } from "react";
+import type { Match } from "../types";
 
-const TABS = ["Latest Match", "Live Games", "Coming Match"];
+import useRequiredContext from "./useRequiredContext";
+import { DataContext } from "../contexts/DataContext";
+const TABS = ["Latest Match", "Live Games", "Coming Match"] as const;
 
 const objOfArr = {
-    "Latest Match": (item) => {
+    "Latest Match": (item: Match) => {
 
         const status = item.fixture.status.short;
 
         return ["FT", "AET", "PEN", "WO", "AWD"].includes(status);
 
     },
-    "Live Games": (item) => {
+    "Live Games": (item: Match) => {
 
         const status = item.fixture.status.short;
 
         return ["1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT", "LIVE"].includes(status);
 
     },
-    "Coming Match": (item) => {
+    "Coming Match": (item: Match) => {
 
         const status = item.fixture.status.short;
 
@@ -27,46 +29,68 @@ const objOfArr = {
     }
 };
 
-function reduceCallBack(acc, curr) {
+// function reduceCallBack(acc: leaguesObjType, curr: Match) {
 
 
 
-    const league = curr.league.id;
+//     const league = curr.league.id;
 
-    if (acc[league]) {
-        acc[league].push(curr);
-    } else {
-        acc[league] = [curr];
-    }
+//     if (acc[league]) {
+//         acc[league].push(curr);
+//     } else {
+//         acc[league] = [curr];
+//     }
 
-    return acc;
+//     return acc;
 
-}
+// }
+
+
 
 export default function useFootballMatches() {
-
-    const [activeTab, setActiveTab] = useState(TABS[1]);
-    const { data } = useContext(DataContext);
+    // <"Latest Match" | "Live Games" | "Coming Match">
+    const [activeTab, setActiveTab] = useState<"Latest Match" | "Live Games" | "Coming Match">(TABS[1]);
+    const { data } = useRequiredContext(DataContext);
     const [curPagination, setPagination] = useState(10);
 
-    const curCategory = useMemo(() => data?.response?.filter(objOfArr[activeTab]), [data, activeTab]);
+    const curCategory = useMemo(() => {
 
-    const leaguesObj = useMemo(() => {
 
-        if (!curCategory) {
-            return {};
+
+        const cycleReadyArr = Object.entries((data) ? data : {});
+        console.log(cycleReadyArr, "cycle ready");
+
+        // const category = cycleReadyArr?.filter(objOfArr[activeTab])
+        const category = cycleReadyArr.map((matches): [string, Match[]] => {
+
+            const filteredMatches = matches[1].filter(objOfArr[activeTab]);
+
+            return [matches[0], filteredMatches]
+        }).filter((item) => item[1].length > 0);
+
+        if (category) {
+            return category
+        } else {
+            return [];
         }
 
+    }, [data, activeTab]);
 
-        const pagination = curCategory.slice(0, curPagination);
-        return pagination.reduce(reduceCallBack, {});
+    console.log(`Текущая категория:`, curCategory);
+
+    // const leaguesObj = useMemo(() => {
+
+    //     const pagination = curCategory.slice(0, curPagination);
+    //     return pagination.reduce(reduceCallBack, {});
 
 
-        // return curCategory.reduce(reduceCallBack, {});
+    // }, [curCategory, curPagination]);
 
-    }, [curCategory, curPagination]);
+    // console.log(leaguesObj)
 
-    const renderReadyMatches = Object.entries(leaguesObj);
+    const renderReadyMatches = curCategory.slice(0, curPagination);
+
+    // console.log(`Матчи готовые к рендеру:`, renderReadyMatches);
     // console.log(renderReadyMatches);
 
     return { activeTab, setActiveTab, renderReadyMatches, TABS, setPagination, curPagination, curCategory };

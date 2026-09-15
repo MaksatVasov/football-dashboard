@@ -1,7 +1,8 @@
 import MatchRow from "./MatchRow";
+import type { GroupedMatchList} from "../types";
 
-export default function GroupedMatchList({ matches }) {
-  // console.log(matches)
+export default function GroupedMatchList({ matches} : {matches: GroupedMatchList}) {
+  
   return (
     <div className="relative">
       <h2 className="sticky top-0 z-10 bg-[#F4F1FD] border-b-2 border-[#5942AA] py-3 px-4 flex items-center gap-3 text-[#3B2C70] font-extrabold uppercase text-sm">

@@ -1,8 +1,12 @@
 import { Info, LineChart } from "lucide-react";
-import { liveStatuses, cancelledStatuses, upcomingStatuses } from "../helpers/matchStatuses.js";
+// import { liveStatuses, cancelledStatuses, upcomingStatuses } from "../helpers/";
+import useMatchStatuses from "../hooks/useMatchStatuses";
+import type { Match } from "../types";
 
-function defineMatchStatus(match) {
+function defineMatchStatus(match: Match) {
     const status = match.fixture.status.short;
+
+    const { liveStatuses, cancelledStatuses, upcomingStatuses } = useMatchStatuses();
 
     const objOfStatuses = {
         isLive: false,
@@ -17,9 +21,11 @@ function defineMatchStatus(match) {
 
     if (isLive) {
         const { elapsed, extra } = match.fixture.status;
-        
+
+        const baseElapsed = elapsed ?? (match.fixture.periods.second ? 90 : 45);
+
         objOfStatuses.isLive = true;
-        objOfStatuses.status = extra ? `${elapsed}+${extra}` : elapsed;
+        objOfStatuses.status = extra ? `${baseElapsed}+${extra}` : `${baseElapsed}`;
 
         return objOfStatuses;
     }
@@ -40,7 +46,7 @@ function defineMatchStatus(match) {
     return objOfStatuses;
 }
 
-export default function MatchRow({ match }) {
+export default function MatchRow({ match }: { match: Match }) {
     const matchStatus = defineMatchStatus(match);
     const matchDate = new Date(match.fixture.date);
 
@@ -51,7 +57,7 @@ export default function MatchRow({ match }) {
         >
             <div className="flex items-center gap-2 md:gap-3">
                 <span className="text-2xl shrink-0">
-                    <img src={match.teams.home.logo} className="w-6 h-6 md:w-8 md:h-8 object-contain" alt="" />
+                    <img src={match.teams.home.logo ?? undefined} className="w-6 h-6 md:w-8 md:h-8 object-contain" alt={match.teams.home.name} />
                 </span>
                 <span className="font-semibold text-xs md:text-sm text-gray-900 truncate">
                     {match.teams.home.name}
@@ -59,8 +65,8 @@ export default function MatchRow({ match }) {
             </div>
 
             <div className="bg-[#EBE5F7] text-[#5942AA] px-3 md:px-4 py-1.5 rounded-xl text-xs md:text-sm font-bold min-w-14 text-center justify-self-center">
-                {matchStatus.isUpcoming 
-                    ? (matchStatus.status === "TBD" ? "TBD" : matchDate.toLocaleTimeString("en-GB", { hour: '2-digit', minute: '2-digit' })) 
+                {matchStatus.isUpcoming
+                    ? (matchStatus.status === "TBD" ? "TBD" : matchDate.toLocaleTimeString("en-GB", { hour: '2-digit', minute: '2-digit' }))
                     : `${match.goals.home} : ${match.goals.away}`
                 }
             </div>
@@ -70,7 +76,7 @@ export default function MatchRow({ match }) {
                     {match.teams.away.name}
                 </span>
                 <span className="text-2xl shrink-0">
-                    <img src={match.teams.away.logo} className="w-6 h-6 md:w-8 md:h-8 object-contain" alt="" />
+                    <img src={match.teams.away.logo ?? undefined} className="w-6 h-6 md:w-8 md:h-8 object-contain" alt={match.teams.away.name} />
                 </span>
             </div>
 

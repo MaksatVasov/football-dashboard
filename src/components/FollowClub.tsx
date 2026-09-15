@@ -1,34 +1,25 @@
 import { useRef } from "react";
-import teamLogo from "../assets/images/mainPage/italy.png";
+
 import { ChevronLeft, ChevronRight, Goal } from "lucide-react";
-
-const CLUBS = [
-  { id: 1, isActive: true },
-  { id: 2, isActive: false },
-  { id: 3, isActive: false },
-  { id: 4, isActive: false },
-  { id: 5, isActive: false },
-  { id: 6, isActive: false },
-  { id: 7, isActive: false },
-  { id: 8, isActive: false },
-  { id: 9, isActive: false },
-  { id: 10, isActive: false },
-  { id: 11, isActive: false },
-  { id: 12, isActive: false },
-  { id: 13, isActive: false },
-  { id: 14, isActive: false },
-  { id: 15, isActive: false },
-  { id: 16, isActive: false },
-  { id: 17, isActive: false },
-  { id: 18, isActive: false },
-  { id: 19, isActive: false },
-  { id: 20, isActive: false },
-];
-
+import useRequiredContext from "../hooks/useRequiredContext";
+import { DataContext } from "../contexts/DataContext";
+import { FollowedClubsContext } from "../contexts/FollowedClubsContext";
 export default function FollowClub() {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const scroll = (direction) => {
+  const { curTable } = useRequiredContext(DataContext);
+  const { setFollowClub, followedClubs } = useRequiredContext(FollowedClubsContext);
+
+  // useRequiredContext
+
+  const ArrOfteams = curTable?.standings;
+
+  const renderReadyTeams = Array.isArray(ArrOfteams) ? ArrOfteams[0] : [];
+
+
+  console.log(renderReadyTeams, "teams");
+
+  const scroll = (direction: number): void => {
     scrollRef.current?.scrollBy({
       left: direction * 300,
       behavior: "smooth",
@@ -36,36 +27,54 @@ export default function FollowClub() {
   };
 
   return (
-    <section className="w-full max-w-full overflow-hidden pt-8 mb-12 border-[#EFEFEF] border-t-[3px]">
+    //deleted overflow-hidden from section. Be carefull
+    <section className="w-full mb-12 max-w-full  pt-8 md:mb-8 border-[#EFEFEF] border-t-[3px]">
       <h2 className="flex gap-2 mb-6 text-lg font-bold text-gray-900"><Goal /> Follow club</h2>
 
+      <div
+        ref={scrollRef}
+        className="max-w-full overflow-x-auto md:overflow-x-hidden overflow-y-hidden mb-5"
+      >
+        <div className="flex py-1.5 w-max gap-3">
+          {renderReadyTeams.map((club) => {
 
-      <div className="relative">
-        <div
-          ref={scrollRef}
-          className="max-w-full overflow-x-auto md:overflow-x-hidden"
-        >
-          <div className="flex w-max gap-3">
-            {CLUBS.map((club) => (
-              <div
-                key={club.id}
-                className="h-31 w-31 shrink-0 rounded-full bg-[#F6F6F6] p-7"
-              >
-                <img src={teamLogo} alt="" />
-              </div>
-            ))}
-          </div>
+            const teamLogo = club.team.logo;
+            const teamId = club.team.id;
+
+            const isFollowed = followedClubs.includes(teamId);
+
+            return (<button
+              key={teamId}
+              className={`h-31 w-31 shrink-0 rounded-full bg-[#F6F6F6] p-7 hover:scale-95 ${isFollowed ? "outline outline-purple-700" : ""}`}
+              onClick={() => {
+
+                if (followedClubs.includes(teamId)) {
+
+                  const filteredClubs = followedClubs.filter((item) => item !== teamId);
+
+                  setFollowClub(filteredClubs);
+                  return;
+                };
+
+                setFollowClub((prev) => [...prev, teamId]);
+
+
+              }}
+            >
+              <img className="w-17 h-17 object-contain" src={teamLogo} alt={club.team.name} />
+            </button>)
+          })}
         </div>
 
-
+      </div>
+      <div className=" hidden md:flex justify-between">
         <button
           type="button"
           onClick={() => scroll(-1)}
           className="
             hidden md:flex
-            absolute left-2 top-1/2 z-10
+            z-10
             h-10 w-10
-            -translate-y-1/2
             items-center justify-center
             rounded-full bg-white/90 shadow-md
           "
@@ -73,16 +82,13 @@ export default function FollowClub() {
         >
           <ChevronLeft />
         </button>
-
-
         <button
           type="button"
           onClick={() => scroll(1)}
           className="
             hidden md:flex
-            absolute right-2 top-1/2 z-10
+            z-10
             h-10 w-10
-            -translate-y-1/2
             items-center justify-center
             rounded-full bg-white/90 shadow-md
             

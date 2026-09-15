@@ -1,4 +1,4 @@
-import { ChevronDown,Trophy } from "lucide-react";
+import { ChevronDown, Trophy } from "lucide-react";
 import draw from "../assets/images/mainPage/draw.avif";
 import lose from "../assets/images/mainPage/lose.svg";
 import win from "../assets/images/mainPage/win.svg";
@@ -9,6 +9,8 @@ import italyLogo from "../assets/images/mainPage/italy-logo.avif";
 import germanyLogo from "../assets/images/mainPage/germany-logo.avif";
 import franceLogo from "../assets/images/mainPage/france-logo.avif";
 import useStandings from "../hooks/useStandings";
+import type { Standing } from "../types";
+
 
 const TOP_LEAGUES = [
   { id: 39, name: "Premier League", country: "England", flag: englandLogo },
@@ -18,16 +20,20 @@ const TOP_LEAGUES = [
   { id: 61, name: "Ligue 1", country: "France", flag: franceLogo },
 ];
 
-function getResultImage(value) {
-  const objOfStyles = {
+type MatchResult = "W" | "D" | "L";
+
+function getResultImage(value: string) {
+  const objOfStyles: Record<MatchResult, string> = {
     W: win,
     D: draw,
     L: lose,
-  };
-  return objOfStyles[value] || draw;
+  } as const;
+
+
+  return objOfStyles[value as MatchResult] || draw;
 }
 
-function TableRow({ item }) {
+function TableRow({ item }: {item: Standing}) {
   const { rank, points, form, team: { logo, name }, all: { win: winCount, draw: drawCount, lose: loseCount } } = item;
   const curForm = [...(form || "")];
 
@@ -68,13 +74,13 @@ function TableRow({ item }) {
   );
 }
 
-function LayoutOfTable({ arrayOfTeams }) {
+function LayoutOfTable({ arrayOfTeams }: { arrayOfTeams: Standing[] }) {
   if (!Array.isArray(arrayOfTeams) || arrayOfTeams.length === 0) {
     return (
       <div className="w-full py-12 flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-400 my-2">
         <span className="text-3xl mb-2">📋</span>
         <p className="text-sm font-medium text-gray-600">No standings data available</p>
-        <p className="text-xs text-gray-400 mt-1">Standings for this league have not started yet or are unavailable</p>
+        <p className="text-xs text-gray-400 mt-1">Standings for this curTable have not started yet or are unavailable</p>
       </div>
     );
   }
@@ -91,8 +97,9 @@ function LayoutOfTable({ arrayOfTeams }) {
 export default function Standings() {
   const { isOpen, setOpen, setLeagueID, curTable } = useStandings();
 
-  const league = curTable?.league;
-  const tableToRender = league?.standings?.[0] || [];
+
+
+  const tableToRender = Array.isArray(curTable?.standings) ? curTable.standings[0] : [];
 
   return (
     <section className="w-full bg-white pt-8 mb-12 border-t-[3px] border-[#EFEFEF]">
@@ -104,8 +111,8 @@ export default function Standings() {
       <div className="flex items-center justify-between mb-6">
         <div className="relative min-w-50">
           <button onClick={() => setOpen((prev) => !prev)} className="p-1.5 flex gap-1.5 items-center font-medium">
-            {league?.logo && <img className="w-6 h-6 object-contain" src={league.logo} alt={league.name} />}
-            {league?.name || "Select league"}
+            {curTable?.logo && <img className="w-6 h-6 object-contain" src={curTable.logo} alt={curTable.name} />}
+            {curTable?.name || "Select league"}
             <span className={`transition-transform duration-100 ${isOpen ? "rotate-180" : "rotate-0"}`}><ChevronDown /></span>
           </button>
 

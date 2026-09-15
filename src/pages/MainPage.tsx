@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import DownloadAppPromo from "../components/DownloadAppPromo";
 import FeaturedBanner from "../components/FeaturedBanner";
 import FollowClub from "../components/FollowClub";
@@ -8,13 +7,13 @@ import LiveMatchWidget from "../components/LiveMatchWidget";
 import NewsSection from "../components/NewsSection";
 import { Shopping } from "../components/Shopping";
 import Standings from "../components/Standings";
-import { DataContext } from "../contexts/DataContex";
 import Loader from "../components/Loader";
-
+import useRequiredContext from "../hooks/useRequiredContext"
+import { DataContext } from "../contexts/DataContext";
 
 export default function MainPage() {
 
-  const { data } = useContext(DataContext);
+  const { data } = useRequiredContext(DataContext);
 
   if (!data) {
     return (<Loader />);
