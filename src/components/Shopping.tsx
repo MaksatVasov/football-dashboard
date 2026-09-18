@@ -15,7 +15,9 @@ import atleticoHomeKit from "../assets/images/kits/atletico-madrid-home-kit.avif
 import tottenhamAwayKit from "../assets/images/kits/totenham-away-kit.avif";
 
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { useRef } from "react";
+import useShopping from "../hooks/useShopping";
+
+
 const SHOP_ITEMS = [
   { id: 1, name: "Real Madrid Home Kit 26 / 27", price: "$150.10", img: realMadridHomeKit },
   { id: 2, name: "Barcelona Home Kit 26 / 27", price: "$125.00", img: BarcaHomeKit },
@@ -34,27 +36,20 @@ const SHOP_ITEMS = [
   { id: 15, name: "Tottenham Away Kit 26 / 27", price: "$118.00", img: tottenhamAwayKit },
 ];
 
+
+
 export function Shopping() {
 
-  const div = useRef<HTMLDivElement | null>(null);
-
-  const scrollKits = (distance: number): void => {
-
-    div.current?.scrollBy({
-      left: distance,
-      behavior: "smooth"
-    })
-
-  }
+  const { scrollKits, div, scrollLeft, scrollRight, checkScroll } = useShopping();
 
   return (
-    <div className="w-full pt-8 mb-12 border-[#EFEFEF] border-t-[3px]">
+    <div id="shop" className="w-full pt-8 mb-12 border-[#EFEFEF] border-t-[3px]">
       <div className="flex items-center gap-2 mb-4 px-2">
         <span className="text-lg">👕</span>
         <h2 className="text-[15px] font-bold text-gray-900">Shopping</h2>
       </div>
 
-      <div ref={div} className="flex overflow-x-auto gap-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-2 pb-2">
+      <div onScroll={checkScroll} ref={div} className="flex overflow-x-auto gap-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-2 pb-2">
         {SHOP_ITEMS.map((item) => (
           <div key={item.id} className="flex flex-col gap-3 shrink-0 w-45 cursor-pointer group">
             <div className="w-full h-50 bg-[#F8F9FA] rounded-2xl flex items-center justify-center p-4 transition-colors group-hover:bg-gray-100">
@@ -69,25 +64,26 @@ export function Shopping() {
 
 
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-3 px-2">
         <button
-          onClick={() => scrollKits(-300)}
-          className="hidden md:flex
-            z-10
-            h-10 w-10
-            items-center justify-center
-            rounded-full bg-white/90 shadow-md"
+          type="button"
+          disabled={!scrollLeft}
+          onClick={() => scrollKits("left")}
           aria-label="Previous kits"
-          type="button"><ChevronLeft /></button>
+          className="hidden md:flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 bg-white text-gray-800 shadow-sm transition-all duration-200 hover:bg-gray-50 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:shadow-none disabled:border-gray-100 disabled:hover:bg-white disabled:active:scale-100"
+        >
+          <ChevronLeft className="h-5 w-5 stroke-[2.2]" />
+        </button>
 
         <button
-          onClick={() => scrollKits(300)}
-          className="hidden md:flex
-            z-10
-            h-10 w-10
-            items-center justify-center
-            rounded-full bg-white/90 shadow-md"
-          type="button"><ChevronRight /></button>
+          type="button"
+          disabled={!scrollRight}
+          onClick={() => scrollKits("right")}
+          aria-label="Next kits"
+          className="hidden md:flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 bg-white text-gray-800 shadow-sm transition-all duration-200 hover:bg-gray-50 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:shadow-none disabled:border-gray-100 disabled:hover:bg-white disabled:active:scale-100"
+        >
+          <ChevronRight className="h-5 w-5 stroke-[2.2]" />
+        </button>
       </div>
     </div>
   );

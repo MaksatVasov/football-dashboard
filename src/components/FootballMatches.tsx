@@ -9,9 +9,9 @@ export default function FootballMatches() {
 
 
   const { activeTab, setActiveTab, renderReadyMatches, TABS, setPagination, curPagination, curCategory } = useFootballMatches();
-  // console.log(renderReadyMatches, "готовые к рендеру матчи")
+  
   return (
-    <section className="border-t-[3px] pt-8 mb-12 border-[#EFEFEF]">
+    <section id="matches" className="border-t-[3px] pt-8 mb-12 border-[#EFEFEF]">
       <div className="flex items-center gap-2 mb-6">
         <span className="text-xl">⚽</span>
         <h2 className="text-lg font-bold text-gray-900">Football Matches</h2>

@@ -20,6 +20,11 @@ import BAYERN_BODO from "../assets/images/news/bayern_bodo.avif";
 import MU_CITY_REFEREE from "../assets/images/news/mu_city_referee.avif";
 import JOSE_REAL from "../assets/images/news/jose_real.avif";
 import BOURNEMOUTH from "../assets/images/news/bournemouth.avif";
+import ADEYEMI_BARCELONA from "../assets/images/news/adeyemi-barca.avif";
+import REAL_RAYO from "../assets/images/news/real-madrid-rayo.avif";
+import VICTOR_MUNOZ_LIVERPOOL from "../assets/images/news/victor_munoz_liverpool.avif";
+import ARDA_REAL_MADRID from "../assets/images/news/arda_guler.avif";
+
 const NEWS_DATA: News[] = [
     {
         id: 1,
@@ -168,11 +173,11 @@ const NEWS_DATA: News[] = [
     {
         id: 17,
         type: "news",
-        category: "PREMIER LEAGUE",
-        title: "Nottingham Forest celebrate first league victory of the season",
+        category: "LA LIGA",
+        title: "Arda Güler emerges as Europe's most creative playmaker",
         description:
-            "Forest finally secured their first Premier League win after beating Aston Villa 2-1 in an impressive away performance.",
-        img: "",
+            "The Real Madrid star leads the top five European leagues in chances created per 90 minutes (3.68), becoming Madrid's primary creative outlet.",
+        img: ARDA_REAL_MADRID,
     },
     {
         id: 18,
@@ -196,10 +201,10 @@ const NEWS_DATA: News[] = [
         id: 20,
         type: "transfer",
         category: "TRANSFER",
-        title: "Celtic receive interest in prolific attacking star",
+        title: "Barcelona complete €22m signing of Karim Adeyemi from Dortmund",
         description:
-            "Celtic have received fresh interest in their in-form forward after his impressive start to the season.",
-        img: "",
+            "The German forward has officially signed a contract until 2031 at Camp Nou, reuniting with Hansi Flick.",
+        img: ADEYEMI_BARCELONA,
     },
     {
         id: 21,
@@ -208,16 +213,16 @@ const NEWS_DATA: News[] = [
         title: "Real Madrid cruise past Rayo Vallecano with 4-1 victory",
         description:
             "Real Madrid continued their strong start to the season with a convincing 4-1 victory over Rayo Vallecano, keeping their title challenge on track.",
-        img: "",
+        img: REAL_RAYO,
     },
     {
         id: 22,
         type: "transfer",
         category: "TRANSFER",
-        title: "Liverpool begin planning for January reinforcements",
+        title: "Liverpool complete £34m deal for Osasuna forward Víctor Muñoz",
         description:
-            "Liverpool have started assessing potential January targets as the club looks to strengthen its squad during the second half of the season.",
-        img: "",
+            "The Reds have confirmed the arrival of Spanish attacker Víctor Muñoz to add depth and creativity to the frontline.",
+        img: VICTOR_MUNOZ_LIVERPOOL,
     },
 ];
 

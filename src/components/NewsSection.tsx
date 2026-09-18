@@ -1,6 +1,5 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Arsenal from "../assets/images/mainPage/Arsenal.avif";
 import useNewsSection from "../hooks/useNewsSection";
 
 
@@ -11,7 +10,7 @@ export default function NewsSection() {
   const { scroll, canScrollLeft, canScrollRight, scrollRef, checkScroll, newsTabs, setTab, curTab, newsArr } = useNewsSection();
 
   return (
-    <section className="w-full bg-white pt-8 border-t-[3px] border-[#EFEFEF]">
+    <section id="news" className="w-full bg-white pt-8 border-t-[3px] border-[#EFEFEF]">
       <div className="flex items-center gap-2 mb-6">
         <span className="text-xl">📰</span>
         <h2 className="text-lg font-bold text-gray-900">All News and Transfers Today</h2>
@@ -62,7 +61,7 @@ export default function NewsSection() {
           <div key={news.id} className="flex flex-col shrink-0 w-65 md:w-70 cursor-pointer group">
             <div className="w-full h-40 rounded-2xl overflow-hidden mb-4">
               <img
-                src={Arsenal}
+                src={news.img}
                 alt="News thumbnail"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />

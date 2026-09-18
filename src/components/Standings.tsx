@@ -11,7 +11,6 @@ import franceLogo from "../assets/images/mainPage/france-logo.avif";
 import useStandings from "../hooks/useStandings";
 import type { Standing } from "../types";
 
-
 const TOP_LEAGUES = [
   { id: 39, name: "Premier League", country: "England", flag: englandLogo },
   { id: 140, name: "La Liga", country: "Spain", flag: spainLogo },
@@ -29,25 +28,29 @@ function getResultImage(value: string) {
     L: lose,
   } as const;
 
-
   return objOfStyles[value as MatchResult] || draw;
 }
 
-function TableRow({ item }: {item: Standing}) {
+function getRowBgClass(rank: number, totalTeams: number) {
+  if (rank <= 4) {
+    return "bg-[#F2F0F9] hover:bg-[#EAE7F5]";
+  }
+  if (rank === 5) {
+    return "bg-orange-50 hover:bg-orange-100";
+  }
+  if (rank === 6) {
+    return "bg-emerald-50 hover:bg-emerald-100";
+  }
+  if (rank > totalTeams - 3) {
+    return "bg-[#FEE6EB] hover:bg-[#FCDADF]";
+  }
+  return "bg-gray-50 hover:bg-gray-100";
+}
+
+function TableRow({ item, totalTeams }: { item: Standing; totalTeams: number }) {
   const { rank, points, form, team: { logo, name }, all: { win: winCount, draw: drawCount, lose: loseCount } } = item;
   const curForm = [...(form || "")];
-
-  let bgClass = "bg-gray-50 hover:bg-gray-100";
-
-  if (rank <= 4) {
-    bgClass = "bg-[#F2F0F9] hover:bg-[#EAE7F5]";
-  } else if (rank >= 5 && rank <= 6) {
-    bgClass = "bg-orange-50 hover:bg-orange-100";
-  } else if (rank === 7) {
-    bgClass = "bg-emerald-50 hover:bg-emerald-100";
-  } else if (rank >= 18) {
-    bgClass = "bg-[#FEE6EB] hover:bg-[#FCDADF]";
-  }
+  const bgClass = getRowBgClass(rank, totalTeams);
 
   return (
     <div
@@ -80,7 +83,7 @@ function LayoutOfTable({ arrayOfTeams }: { arrayOfTeams: Standing[] }) {
       <div className="w-full py-12 flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-400 my-2">
         <span className="text-3xl mb-2">📋</span>
         <p className="text-sm font-medium text-gray-600">No standings data available</p>
-        <p className="text-xs text-gray-400 mt-1">Standings for this curTable have not started yet or are unavailable</p>
+        <p className="text-xs text-gray-400 mt-1">Standings for this league have not started yet or are unavailable</p>
       </div>
     );
   }
@@ -88,7 +91,7 @@ function LayoutOfTable({ arrayOfTeams }: { arrayOfTeams: Standing[] }) {
   return (
     <div className="w-full flex flex-col gap-2">
       {arrayOfTeams.map((item) => (
-        <TableRow key={item.team.id} item={item} />
+        <TableRow key={item.team.id} item={item} totalTeams={arrayOfTeams.length} />
       ))}
     </div>
   );
@@ -97,12 +100,10 @@ function LayoutOfTable({ arrayOfTeams }: { arrayOfTeams: Standing[] }) {
 export default function Standings() {
   const { isOpen, setOpen, setLeagueID, curTable } = useStandings();
 
-
-
   const tableToRender = Array.isArray(curTable?.standings) ? curTable.standings[0] : [];
 
   return (
-    <section className="w-full bg-white pt-8 mb-12 border-t-[3px] border-[#EFEFEF]">
+    <section id="standings" className="w-full bg-white pt-8 mb-12 border-t-[3px] border-[#EFEFEF]">
       <div className="flex items-center gap-2 mb-6">
         <Trophy className="w-5 h-5 text-yellow-500" />
         <h2 className="text-lg font-bold text-gray-900">Standings</h2>
@@ -150,14 +151,25 @@ export default function Standings() {
         <LayoutOfTable arrayOfTeams={tableToRender} />
       </div>
 
-      <div className="flex items-center gap-6 mt-6">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 px-2">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#5942AA]"></div>
           <span className="text-xs font-semibold text-gray-600">Champions League</span>
         </div>
+
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#7A2E39]"></div>
+          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
           <span className="text-xs font-semibold text-gray-600">Europa League</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+          <span className="text-xs font-semibold text-gray-600">Conference League</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-[#E11D48]"></div>
+          <span className="text-xs font-semibold text-gray-600">Relegation</span>
         </div>
       </div>
     </section>
