@@ -68,7 +68,17 @@ const MOCK_DATA = {
 };
 
 export default function useLiveMatchWidget() {
-  const { liveMatchStats } = useRequiredContext(DataContext);
+  const { liveMatchStats, liveMatchID, isLoadingDetails } = useRequiredContext(DataContext);
+
+  
+
+  const isDataReal = (liveMatchID === "999999999" || liveMatchStats !== null);
+
+  // if (liveMatchID === "999999999") {
+  //   isDataReal = true;
+  // } else if (liveMatchStats === null) {
+  //   isDataReal = false;
+  // }
 
   const homeTeam: TeamStats = liveMatchStats ? liveMatchStats[0] : (MOCK_DATA.response[0] as TeamStats);
   const awayTeam: TeamStats = liveMatchStats ? liveMatchStats[1] : (MOCK_DATA.response[1] as TeamStats);
@@ -94,5 +104,5 @@ export default function useLiveMatchWidget() {
     { label: "Fouls", key: "fouls" },
   ];
 
-  return { homeStats, awayStats, WIDGET_STATS, homeTeam, awayTeam };
+  return { homeStats, awayStats, WIDGET_STATS, homeTeam, awayTeam, isDataReal, isLoadingDetails };
 }

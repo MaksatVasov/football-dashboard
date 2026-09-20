@@ -3,15 +3,16 @@ import { useEffect } from "react";
 interface UseScrollSpyOptions {
     sectionIds: string[];
     setActiveSection: (id: string) => void;
+    isLoadingData: boolean
 }
 
-export function useScrollSpy({ sectionIds, setActiveSection }: UseScrollSpyOptions) {
+export function useScrollSpy({ sectionIds, setActiveSection, isLoadingData }: UseScrollSpyOptions) {
     useEffect(() => {
         if (sectionIds.length === 0) return;
 
         const elements = sectionIds
             .map((id) => document.getElementById(id))
-            .filter((el): el is HTMLElement => el !== null); 
+            .filter((el): el is HTMLElement => el !== null);
 
         if (elements.length === 0) return;
 
@@ -36,5 +37,5 @@ export function useScrollSpy({ sectionIds, setActiveSection }: UseScrollSpyOptio
 
 
         return () => observer.disconnect();
-    }, [sectionIds, setActiveSection]);
+    }, [sectionIds, isLoadingData, setActiveSection]);
 }

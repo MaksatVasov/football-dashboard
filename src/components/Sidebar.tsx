@@ -1,5 +1,6 @@
 import { LayoutGrid, MonitorPlay, Trophy, ShoppingBag, Newspaper, Heart } from "lucide-react";
 import logo from "../assets/images/header/Logo-header.svg";
+import { Link } from "react-router-dom";
 
 export const MENU_ITEMS = [
     { id: "dashboard", label: "Dashboard", icon: LayoutGrid },
@@ -27,10 +28,10 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
         <aside className="hidden lg:flex h-full bg-white border-r border-gray-200/60 shrink-0 z-20">
 
             <div className="w-60 flex flex-col py-5 px-6 overflow-y-auto">
-                <a href="#" className="flex items-center gap-2 mb-10 pl-2">
+                <Link to={"/"} className="flex items-center gap-2 mb-10 pl-2">
                     <img src={logo} className="w-7 h-7 text-purple-600" alt="Logo" />
                     <span className="font-bold text-lg tracking-tight text-gray-900">OneFootball</span>
-                </a>
+                </Link>
 
                 <h2 className="text-[11px] font-bold text-gray-400 tracking-wider mb-4 pl-2">
                     MENU
@@ -65,7 +66,8 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
                 </h2>
 
                 <nav className="flex flex-col gap-1.5">
-                    <button
+                    <Link
+                        to={"favorites"}
                         type="button"
                         onClick={() => handleNavigate("favorites")}
                         className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-2xl transition-colors group ${activeSection === "favorites"
@@ -75,7 +77,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
                     >
                         <Heart className="w-5 h-5 transition-colors group-hover:text-rose-500" />
                         <span>Favorite Clubs</span>
-                    </button>
+                    </Link>
                 </nav>
             </div>
         </aside>

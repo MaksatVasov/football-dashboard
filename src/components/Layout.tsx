@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import DataProvider from "../contexts/DataContext";
 import FollowedClubsProvider from "../contexts/FollowedClubsContext";
+import RateLimitModal from "./RateLimitModal";
 import { useState } from "react";
 
 
@@ -24,7 +25,7 @@ export default function Layout() {
                         <Outlet context={{ setActiveSection }} />
                         <Footer />
                     </div>
-
+                    <RateLimitModal />
                 </section>
             </FollowedClubsProvider>
         </DataProvider>

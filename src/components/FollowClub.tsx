@@ -1,5 +1,7 @@
 import { ChevronLeft, ChevronRight, Goal } from "lucide-react";
 import { useFollowClub } from "../hooks/useFollowClub";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function FollowClub() {
   const {
@@ -13,11 +15,26 @@ export default function FollowClub() {
     toggleFollow,
   } = useFollowClub();
 
-  
+  const location = useLocation();
+
+  useEffect(() => {
+
+    if (location.hash !== "#follow-club-section") {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      document.getElementById("follow-club-section")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+
+    return () => clearTimeout(timer);
+
+  }, [location]);
+
   const hasTeams = renderReadyTeams && renderReadyTeams.length > 0;
 
   return (
-    <section className="w-full mb-12 max-w-full pt-8 md:mb-8 border-[#EFEFEF] border-t-[3px]">
+    <section id="follow-club-section" className="w-full mb-12 max-w-full pt-8 md:mb-8 border-[#EFEFEF] border-t-[3px]">
       <h2 className="flex gap-2 mb-6 text-lg font-bold text-gray-900">
         <Goal /> Follow club
       </h2>
@@ -49,9 +66,8 @@ export default function FollowClub() {
                   <button
                     key={teamId}
                     type="button"
-                    className={`h-31 w-31 shrink-0 rounded-full bg-[#F6F6F6] p-7 transition-all hover:scale-95 ${
-                      isFollowed ? "outline-[3px] outline-purple-700" : ""
-                    }`}
+                    className={`h-31 w-31 shrink-0 rounded-full bg-[#F6F6F6] p-7 transition-all hover:scale-95 ${isFollowed ? "outline-[3px] outline-purple-700" : ""
+                      }`}
                     onClick={() => toggleFollow(teamId)}
                   >
                     <img className="w-17 h-17 object-contain" src={teamLogo} alt={club.team.name} />
@@ -71,7 +87,7 @@ export default function FollowClub() {
             >
               <ChevronLeft className="h-5 w-5 stroke-[2.2]" />
             </button>
-            
+
             <button
               type="button"
               disabled={!canScrollRight}

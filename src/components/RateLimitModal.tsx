@@ -1,0 +1,63 @@
+import { DataContext } from "../contexts/DataContext";
+import useRequiredContext from "../hooks/useRequiredContext";
+import { useEffect, useRef } from "react";
+
+
+export default function RateLimitModal() {
+
+    const { isRateLimited, setIsRateLimited } = useRequiredContext(DataContext);
+    const dialogRef = useRef<HTMLDialogElement | null>(null);
+
+    useEffect(() =>{
+
+        if(isRateLimited){
+            dialogRef.current?.showModal();
+        }else{
+            dialogRef.current?.close();
+        }
+
+    }, [isRateLimited]);
+    
+    if (isRateLimited) {
+        return (
+            <dialog
+                ref={dialogRef}
+                onClose={() => setIsRateLimited(false)}
+                className="
+                m-auto p-8 rounded-3xl max-w-sm w-full 
+              bg-white shadow-2xl text-center
+              backdrop:bg-black/60 backdrop:backdrop-blur-sm
+                open:animate-in open:fade-in open:zoom-in-95 open:duration-200"
+            >
+                <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl">
+                    ⚠️
+                </div>
+
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    API Limit Reached
+                </h2>
+
+                <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+                    Daily free limit of 100 requests exceeded. <br />
+                    Data will reset at 04:00 GST.
+                </p>
+
+                <div className="flex justify-center">
+                    <button
+                    onClick={() => setIsRateLimited(false)}
+                        type="button"
+                        className="
+                        w-full bg-[#5942AA] hover:bg-[#4a368c] active:scale-[0.98] 
+                      text-white font-semibold py-3 px-6 rounded-xl 
+                        transition-all shadow-md"
+                    >
+                        OK
+                    </button>
+                </div>
+            </dialog>
+        );
+    } else {
+        return null;
+    }
+
+}

@@ -17,15 +17,15 @@ import NewsSection from "../components/NewsSection";
 const SECTION_IDS = MENU_ITEMS.map((item) => item.id);
 
 export default function MainPage() {
-  const { data } = useRequiredContext(DataContext);
+  const { isLoadingData } = useRequiredContext(DataContext);
   const { setActiveSection } = useOutletContext<{ setActiveSection: (id: string) => void }>();
 
   useScrollSpy({
-    sectionIds: data ? SECTION_IDS : [],
+    sectionIds:  SECTION_IDS,
     setActiveSection,
   });
 
-  if (!data) {
+  if (isLoadingData) {
     return <Loader />;
   }
 

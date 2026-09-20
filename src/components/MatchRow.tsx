@@ -96,7 +96,10 @@ export default function MatchRow({ match }: { match: Match }) {
             </div>
 
             <div className="flex items-center justify-end gap-1 md:gap-2 text-gray-400">
-                <button onClick={() => setLiveMatchID(String(match.fixture.id))} className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
+                <button onClick={() => {
+                    setLiveMatchID(String(match.fixture.id));
+                    document.getElementById("liveWidget")?.scrollIntoView({behavior: "smooth"});
+                }} className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
                     <Info className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
                 <button className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">

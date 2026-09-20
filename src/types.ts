@@ -1,4 +1,4 @@
-export interface ServerResponseStandings  {
+export interface ServerResponseStandings {
 
     get: string,
     parameters: {
@@ -15,21 +15,21 @@ export interface ServerResponseStandings  {
 
 }
 
-export interface LeagueStandings  {
+export interface LeagueStandings {
     league: League
 }
 
-export interface Tables  {
+export interface Tables {
     [leagueID: number]: League
 };
 
 export interface LeagueMatches {
 
-    [leagueId: string] : Match[]
+    [leagueId: string]: Match[]
 
 }
 
-export interface Standing  {
+export interface Standing {
     rank: number,
     team: Team,
     points: number,
@@ -37,7 +37,7 @@ export interface Standing  {
     form: string,
 }
 
-export interface League  {
+export interface League {
     country: string,
     name: string,
     flag: string,
@@ -47,14 +47,14 @@ export interface League  {
     standings: Standing[][] | boolean
 }
 
-interface AllGames  {
+interface AllGames {
     played: number,
     win: number,
     draw: number,
     lose: number,
 }
 
-export interface Team  {
+export interface Team {
     id: number,
     logo: string,
     name: string
@@ -63,13 +63,22 @@ export interface Team  {
 export type FollowedClubs = number[];
 
 
-export interface Data  {
-
+export interface Data {
+    errors: {
+        [key: string]: string
+    }
     response: Match[]
 
 }
 
-export interface Fixture  {
+export interface DataStats {
+    errors: {
+        [key: string]: string
+    }
+    response: TeamStats[];
+}
+
+export interface Fixture {
 
     id: number,
     status: {
@@ -85,7 +94,7 @@ export interface Fixture  {
 
 }
 
-export interface Match  {
+export interface Match {
 
     fixture: Fixture,
     teams: {
@@ -102,7 +111,7 @@ export interface Match  {
 
 export type GroupedMatchList = Match[];
 
-export interface FixtureTeam  {
+export interface FixtureTeam {
     id: number,
     name: string,
     logo: (string | null),
@@ -110,7 +119,7 @@ export interface FixtureTeam  {
 
 }
 
-export interface DataContextType  {
+export interface DataContextType {
 
     isLoadingData: boolean,
     data: LeagueMatches | null,
@@ -120,7 +129,12 @@ export interface DataContextType  {
     leagueTables: Tables,
     curTable: League | null,
     setLiveMatchID: React.Dispatch<React.SetStateAction<string>>,
-    liveMatchStats: TeamStats[] | null
+    liveMatchStats: TeamStats[] | null,
+    liveMatchID: string,
+    setLoadingDetails: React.Dispatch<React.SetStateAction<boolean>>,
+    isLoadingDetails: boolean,
+    isRateLimited: boolean,
+    setIsRateLimited: React.Dispatch<React.SetStateAction<boolean>>
 
 }
 
@@ -140,7 +154,7 @@ export interface News {
     img: string
 }
 
-export interface leaguesObjType  {
+export interface leaguesObjType {
 
     [leagueId: number]: Match[]
 

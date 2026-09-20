@@ -1,12 +1,8 @@
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import useNewsSection from "../hooks/useNewsSection";
 
-
-
 export default function NewsSection() {
-
-
   const { scroll, canScrollLeft, canScrollRight, scrollRef, checkScroll, newsTabs, setTab, curTab, newsArr } = useNewsSection();
 
   return (
@@ -19,9 +15,8 @@ export default function NewsSection() {
       <div className="flex items-center justify-between border-b border-gray-100 mb-6">
         <div className="flex gap-6">
           {newsTabs.map((tabName) => {
-
             return (
-              <button key={tabName} onClick={() => setTab(tabName)} className={`pb-3 text-sm font-bold text-gray-900 border-b-2  ${curTab === tabName ? "border-b-yellow-500" : ""}`}>
+              <button key={tabName} onClick={() => setTab(tabName)} className={`pb-3 text-sm font-bold text-gray-900 border-b-2  ${curTab === tabName ? "border-b-yellow-500" : "border-b-transparent"}`}>
                 {tabName}
               </button>
             )
@@ -58,24 +53,26 @@ export default function NewsSection() {
         className="flex overflow-x-auto gap-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none pb-2"
       >
         {newsArr.map((news) => (
-          <div key={news.id} className="flex flex-col shrink-0 w-65 md:w-70 cursor-pointer group">
-            <div className="w-full h-40 rounded-2xl overflow-hidden mb-4">
-              <img
-                src={news.img}
-                alt="News thumbnail"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <span className="text-[11px] font-bold text-yellow-600 mb-2">
-              {news.category}
-            </span>
-            <h3 className="text-[15px] font-bold text-gray-900 leading-snug mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-              {news.title}
-            </h3>
-            <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">
-              {news.description}
-            </p>
-          </div>
+          <Link key={news.id} to={`/news/${news.id}`} className="flex flex-col shrink-0 w-65 md:w-70 cursor-pointer group">
+            <article className="flex flex-col h-full">
+              <div className="w-full h-40 rounded-2xl overflow-hidden mb-4">
+                <img
+                  src={news.img}
+                  alt="News thumbnail"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <span className="text-[11px] font-bold text-yellow-600 mb-2">
+                {news.category}
+              </span>
+              <h3 className="text-[15px] font-bold text-gray-900 leading-snug mb-2 line-clamp-2 group-hover:text-[#5942AA] transition-colors">
+                {news.title}
+              </h3>
+              <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+                {news.description}
+              </p>
+            </article>
+          </Link>
         ))}
       </div>
     </section>
