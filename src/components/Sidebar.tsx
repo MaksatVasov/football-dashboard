@@ -1,8 +1,7 @@
 import { LayoutGrid, MonitorPlay, Trophy, ShoppingBag, Newspaper, Heart } from "lucide-react";
 import logo from "../assets/images/header/Logo-header.svg";
-import { useState } from "react";
 
-const MENU_ITEMS = [
+export const MENU_ITEMS = [
     { id: "dashboard", label: "Dashboard", icon: LayoutGrid },
     { id: "matches", label: "Live Football", icon: MonitorPlay },
     { id: "standings", label: "Standings", icon: Trophy },
@@ -10,20 +9,23 @@ const MENU_ITEMS = [
     { id: "news", label: "News", icon: Newspaper },
 ];
 
-export default function Sidebar() {
 
-    const [activeSection, setActiveSection] = useState<string>("dashboard");
+interface SidebarProps {
+    activeSection: string;
+    setActiveSection: (id: string) => void;
+}
+
+
+export default function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
 
     const handleNavigate = (id: string): void => {
-
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
-
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
         setActiveSection(id);
-
     }
 
     return (
         <aside className="hidden lg:flex h-full bg-white border-r border-gray-200/60 shrink-0 z-20">
+
             <div className="w-60 flex flex-col py-5 px-6 overflow-y-auto">
                 <a href="#" className="flex items-center gap-2 mb-10 pl-2">
                     <img src={logo} className="w-7 h-7 text-purple-600" alt="Logo" />
@@ -45,8 +47,8 @@ export default function Sidebar() {
                                 type="button"
                                 onClick={() => handleNavigate(item.id)}
                                 className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-2xl transition-colors ${isActive
-                                        ? "text-purple-700 font-semibold bg-[#F5F3FF]"
-                                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
+                                    ? "text-purple-700 font-semibold bg-[#F5F3FF]"
+                                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
                                     }`}
                             >
                                 <Icon className="w-5 h-5" />
@@ -67,8 +69,8 @@ export default function Sidebar() {
                         type="button"
                         onClick={() => handleNavigate("favorites")}
                         className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-2xl transition-colors group ${activeSection === "favorites"
-                                ? "text-purple-700 font-semibold bg-[#F5F3FF]"
-                                : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
+                            ? "text-purple-700 font-semibold bg-[#F5F3FF]"
+                            : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
                             }`}
                     >
                         <Heart className="w-5 h-5 transition-colors group-hover:text-rose-500" />

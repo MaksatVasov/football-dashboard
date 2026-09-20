@@ -48,7 +48,7 @@ const objOfArr = {
 
 
 export default function useFootballMatches() {
-    // <"Latest Match" | "Live Games" | "Coming Match">
+    
     const [activeTab, setActiveTab] = useState<"Latest Match" | "Live Games" | "Coming Match">(TABS[1]);
     const { data } = useRequiredContext(DataContext);
     const [curPagination, setPagination] = useState(10);
@@ -58,9 +58,8 @@ export default function useFootballMatches() {
 
 
         const cycleReadyArr = Object.entries((data) ? data : {});
-        console.log(cycleReadyArr, "cycle ready");
 
-        // const category = cycleReadyArr?.filter(objOfArr[activeTab])
+        
         const category = cycleReadyArr.map((matches): [string, Match[]] => {
 
             const filteredMatches = matches[1].filter(objOfArr[activeTab]);
@@ -76,7 +75,7 @@ export default function useFootballMatches() {
 
     }, [data, activeTab]);
 
-    console.log(`Текущая категория:`, curCategory);
+
 
     // const leaguesObj = useMemo(() => {
 
@@ -93,7 +92,7 @@ export default function useFootballMatches() {
     // console.log(`Матчи готовые к рендеру:`, renderReadyMatches);
     // console.log(renderReadyMatches);
 
-    return { activeTab, setActiveTab, renderReadyMatches, TABS, setPagination, curPagination, curCategory };
+    return { activeTab, setActiveTab, renderReadyMatches, TABS, setPagination, curPagination, curCategory};
 
 
 }

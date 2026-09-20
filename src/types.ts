@@ -119,6 +119,8 @@ export interface DataContextType  {
     setLeagueTables: React.Dispatch<React.SetStateAction<Tables>>,
     leagueTables: Tables,
     curTable: League | null,
+    setLiveMatchID: React.Dispatch<React.SetStateAction<string>>,
+    liveMatchStats: TeamStats[] | null
 
 }
 
@@ -142,4 +144,19 @@ export interface leaguesObjType  {
 
     [leagueId: number]: Match[]
 
+}
+
+export interface TeamStats {
+    team: {
+        id: number;
+        name: string;
+        logo: string;
+    };
+    statistics: ({
+        type: string;
+        value: number;
+    } | {
+        type: string;
+        value: string;
+    })[];
 }

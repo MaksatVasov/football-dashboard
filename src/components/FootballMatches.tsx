@@ -1,15 +1,44 @@
 import { ChevronDown } from "lucide-react";
 import useFootballMatches from "../hooks/useFootballMatches";
 import GroupedMatchList from "./GroupedMatchList";
+import type { Match } from "../types";
 
 
+function MatchesLayout({ arr, setPagination, curPagination, curCategory }: { arr: [string, Match[]][], setPagination: React.Dispatch<React.SetStateAction<number>>, curPagination: number, curCategory: [string, Match[]][] }) {
 
+  if (arr.length === 0) return (
+    <div className="w-full py-12 flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-400 my-2">
+      <span className="text-3xl mb-2">📋</span>
+      <p className="text-sm font-medium text-gray-600">No matches data available</p>
+      <p className="text-xs text-gray-400 mt-1">No matches for today or they are unavailable</p>
+    </div>
+  )
+
+  return (
+    <>
+      {arr.map(([curleague, matches]) => <GroupedMatchList key={curleague} matches={matches} />)}
+      <button onClick={() => {
+
+        if (curPagination > curCategory.length) {
+          setPagination(10);
+          return;
+        }
+
+        setPagination((prev) => prev + 15)
+
+      }} className="mx-auto mt-6 flex items-center justify-center gap-2 px-6 py-2.5 bg-white hover:bg-[#5942AA] text-gray-700 hover:text-white text-sm font-semibold rounded-xl border border-gray-200 hover:border-[#5942AA] shadow-xs hover:shadow-md transition-all duration-200 active:scale-95 cursor-pointer">
+        <span>{(curPagination > curCategory.length) ? "Show less" : "Show more"}</span>
+        <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+      </button></>
+  )
+
+}
 
 export default function FootballMatches() {
 
 
   const { activeTab, setActiveTab, renderReadyMatches, TABS, setPagination, curPagination, curCategory } = useFootballMatches();
-  
+
   return (
     <section id="matches" className="border-t-[3px] pt-8 mb-12 border-[#EFEFEF]">
       <div className="flex items-center gap-2 mb-6">
@@ -40,22 +69,10 @@ export default function FootballMatches() {
 
       <div className="flex flex-col gap-3 md:gap-2">
 
-
-
-        {renderReadyMatches.map(([curleague, matches]) => <GroupedMatchList key={curleague} matches={matches} />)}
-        <button onClick={() => {
-
-          if (curPagination > curCategory.length) {
-            setPagination(10);
-            return;
-          }
-
-          setPagination((prev) => prev + 15)
-
-        }} className="mx-auto mt-6 flex items-center justify-center gap-2 px-6 py-2.5 bg-white hover:bg-[#5942AA] text-gray-700 hover:text-white text-sm font-semibold rounded-xl border border-gray-200 hover:border-[#5942AA] shadow-xs hover:shadow-md transition-all duration-200 active:scale-95 cursor-pointer">
-          <span>{(curPagination > curCategory.length) ? "Show less" : "Show more"}</span>
-          <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
-        </button>
+        <MatchesLayout arr={renderReadyMatches}
+          setPagination={setPagination}
+          curPagination={curPagination}
+          curCategory={curCategory} />
       </div>
     </section>
   );

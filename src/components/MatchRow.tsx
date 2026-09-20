@@ -2,6 +2,8 @@ import { Info, LineChart } from "lucide-react";
 // import { liveStatuses, cancelledStatuses, upcomingStatuses } from "../helpers/";
 import useMatchStatuses from "../hooks/useMatchStatuses";
 import type { Match } from "../types";
+import useRequiredContext from "../hooks/useRequiredContext";
+import { DataContext } from "../contexts/DataContext";
 
 function defineMatchStatus(match: Match) {
     const status = match.fixture.status.short;
@@ -50,6 +52,8 @@ export default function MatchRow({ match }: { match: Match }) {
     const matchStatus = defineMatchStatus(match);
     const matchDate = new Date(match.fixture.date);
 
+    const { setLiveMatchID } = useRequiredContext(DataContext);
+
     return (
         <div
             key={match.fixture.id}
@@ -92,7 +96,7 @@ export default function MatchRow({ match }: { match: Match }) {
             </div>
 
             <div className="flex items-center justify-end gap-1 md:gap-2 text-gray-400">
-                <button className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
+                <button onClick={() => setLiveMatchID(String(match.fixture.id))} className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
                     <Info className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
                 <button className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
