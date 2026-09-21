@@ -34,18 +34,18 @@ export default function FollowClub() {
   const hasTeams = renderReadyTeams && renderReadyTeams.length > 0;
 
   return (
-    <section id="follow-club-section" className="w-full mb-12 max-w-full pt-8 md:mb-8 border-[#EFEFEF] border-t-[3px]">
-      <h2 className="flex gap-2 mb-6 text-lg font-bold text-gray-900">
+    <section id="follow-club-section" className="w-full mb-12 max-w-full pt-8 md:mb-8 border-line border-t-[3px]">
+      <h2 className="flex gap-2 mb-6 text-lg font-bold text-fg">
         <Goal /> Follow club
       </h2>
 
       {!hasTeams ? (
-        <div className="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50/50 rounded-xl border border-dashed border-gray-200">
+        <div className="flex flex-col items-center justify-center py-12 px-4 text-center bg-surface-2 rounded-xl border border-dashed border-line">
           <span className="text-4xl mb-3">🛡️</span>
-          <h3 className="text-[15px] font-semibold text-gray-700">
+          <h3 className="text-[15px] font-semibold text-fg">
             No clubs available
           </h3>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             Clubs list is empty or currently unavailable
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function FollowClub() {
                   <button
                     key={teamId}
                     type="button"
-                    className={`h-31 w-31 shrink-0 rounded-full bg-[#F6F6F6] p-7 transition-all hover:scale-95 ${isFollowed ? "outline-[3px] outline-purple-700" : ""
+                    className={`h-31 w-31 shrink-0 rounded-full bg-surface-2 p-7 transition-all hover:scale-95 ${isFollowed ? "outline-[3px] outline-accent" : ""
                       }`}
                     onClick={() => toggleFollow(club.team)}
                   >
@@ -82,7 +82,7 @@ export default function FollowClub() {
               type="button"
               disabled={!canScrollLeft}
               onClick={() => scroll("left")}
-              className="hidden md:flex z-10 h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 bg-white text-gray-800 shadow-sm transition-all duration-200 hover:bg-gray-50 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:shadow-none disabled:border-gray-100 disabled:hover:bg-white disabled:active:scale-100"
+              className="hidden md:flex z-10 h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-fg shadow-sm transition-all duration-200 hover:bg-surface-2 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:shadow-none disabled:hover:bg-surface disabled:active:scale-100"
               aria-label="Previous clubs"
             >
               <ChevronLeft className="h-5 w-5 stroke-[2.2]" />
@@ -92,7 +92,7 @@ export default function FollowClub() {
               type="button"
               disabled={!canScrollRight}
               onClick={() => scroll("right")}
-              className="hidden md:flex z-10 h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 bg-white text-gray-800 shadow-sm transition-all duration-200 hover:bg-gray-50 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:shadow-none disabled:border-gray-100 disabled:hover:bg-white disabled:active:scale-100"
+              className="hidden md:flex z-10 h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-fg shadow-sm transition-all duration-200 hover:bg-surface-2 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:shadow-none disabled:hover:bg-surface disabled:active:scale-100"
               aria-label="Next clubs"
             >
               <ChevronRight className="h-5 w-5 stroke-[2.2]" />

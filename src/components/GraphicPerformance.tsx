@@ -41,7 +41,7 @@ function TimelineEvent({
       style={{ left: `${left}%`, top }}
     >
       {isGoal ? (
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white border border-gray-200 text-xs shadow-sm">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-surface border border-line text-xs shadow-sm">
           ⚽
         </span>
       ) : (
@@ -51,16 +51,16 @@ function TimelineEvent({
       )}
 
       <span
-        className={`pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100 transition-opacity absolute z-30 flex w-max max-w-52 flex-col rounded-xl border border-gray-100 bg-white p-2 text-left shadow-xl ${vertical} ${horizontal}`}
+        className={`pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100 transition-opacity absolute z-30 flex w-max max-w-52 flex-col rounded-xl border border-line bg-surface p-2 text-left shadow-xl ${vertical} ${horizontal}`}
       >
-        <span className="text-xs font-bold text-gray-900">
+        <span className="text-xs font-bold text-fg">
           {event.player.name ?? "Unknown"}
         </span>
-        <span className="text-[11px] text-gray-500">
+        <span className="text-[11px] text-muted">
           {formatMinute(event)} · {DETAIL_LABEL[event.detail] ?? event.detail}
         </span>
         {isGoal && event.assist?.name && (
-          <span className="text-[11px] text-gray-500">Assist: {event.assist.name}</span>
+          <span className="text-[11px] text-muted">Assist: {event.assist.name}</span>
         )}
       </span>
     </div>
@@ -86,23 +86,23 @@ export default function GraphicPerformance({ match }: { match: FixtureDetails })
   ));
 
   return (
-    <div className="bg-white rounded-2xl p-6 w-full border border-gray-100 shadow-sm">
-      <h2 className="text-gray-900 font-bold text-lg mb-8">Match Timeline</h2>
+    <div className="bg-surface rounded-2xl p-6 w-full border border-line shadow-sm">
+      <h2 className="text-fg font-bold text-lg mb-8">Match Timeline</h2>
 
       {events.length === 0 ? (
-        <p className="text-center text-gray-500 py-16">No events recorded for this match</p>
+        <p className="text-center text-muted py-16">No events recorded for this match</p>
       ) : (
         <div className="px-4">
           <div className="relative h-56 w-full">
             {TICKS.map((t) => (
               <div
                 key={t}
-                className="absolute top-0 bottom-6 w-px bg-gray-100"
+                className="absolute top-0 bottom-6 w-px bg-line"
                 style={{ left: `${(t / total) * 100}%` }}
               />
             ))}
 
-            <div className="absolute left-0 right-0 top-[45%] h-0.5 bg-gray-200" />
+            <div className="absolute left-0 right-0 top-[45%] h-0.5 bg-track" />
 
             {renderSide(teams.home.id, "22%", "up")}
             {renderSide(teams.away.id, "68%", "down")}
@@ -110,7 +110,7 @@ export default function GraphicPerformance({ match }: { match: FixtureDetails })
             {TICKS.map((t) => (
               <span
                 key={t}
-                className="absolute bottom-0 -translate-x-1/2 text-xs text-gray-400"
+                className="absolute bottom-0 -translate-x-1/2 text-xs text-muted"
                 style={{ left: `${(t / total) * 100}%` }}
               >
                 {t}m
@@ -123,13 +123,13 @@ export default function GraphicPerformance({ match }: { match: FixtureDetails })
       <div className="flex flex-wrap gap-x-6 gap-y-2 pt-6">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          <span className="text-gray-700 text-sm font-medium">{teams.home.name} (top)</span>
+          <span className="text-fg text-sm font-medium">{teams.home.name} (top)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#7F1D1D]"></div>
-          <span className="text-gray-700 text-sm font-medium">{teams.away.name} (bottom)</span>
+          <span className="text-fg text-sm font-medium">{teams.away.name} (bottom)</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
+        <div className="flex items-center gap-2 text-sm text-muted">
           <span>⚽ goal</span>
           <span className="block h-3 w-2.5 rounded-sm bg-yellow-400" /> yellow
           <span className="block h-3 w-2.5 rounded-sm bg-red-600" /> red

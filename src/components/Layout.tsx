@@ -23,7 +23,7 @@ export default function Layout() {
                     <div className="hidden xl:block sticky top-0 h-screen shrink-0">
                         <Sidebar setActiveSection={setActiveSection} activeSection={activeSection} />
                     </div>
-                    <div className="grow bg-[#F6F6F4] flex flex-col min-h-screen">
+                    <div className="grow bg-page flex flex-col min-h-screen">
                         <Header />
                         <div className="flex-1">
                             <Outlet context={{ setActiveSection }} />

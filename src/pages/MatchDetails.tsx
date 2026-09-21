@@ -79,7 +79,7 @@ export default function MatchDetails() {
     }
 
     return (
-        <main className="max-w-full mt-1.5 mx-auto p-5 lg:max-w-[100rem]">
+        <main className="max-w-full mt-1.5 mx-auto p-5 lg:max-w-[100rem] bg-page">
             <MatchScoreboard match={match} />
 
             <MotmSection match={match} />

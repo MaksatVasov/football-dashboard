@@ -32,18 +32,18 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div className="w-full p-6 bg-white shadow-sm border border-gray-100/80 rounded-3xl lg:p-10 animate-in fade-in duration-300">
+        <div className="w-full p-6 bg-surface shadow-sm border border-line rounded-3xl lg:p-10 animate-in fade-in duration-300">
             <div className="flex items-center gap-4 mb-8">
-                <button onClick={() => navigate(-1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 hover:bg-gray-50 transition-colors">
-                    <ArrowLeft className="h-5 w-5 text-gray-700" />
+                <button onClick={() => navigate(-1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-line hover:bg-surface-2 transition-colors">
+                    <ArrowLeft className="h-5 w-5 text-fg" />
                 </button>
-                <h1 className="text-xl font-bold text-gray-900">Checkout</h1>
+                <h1 className="text-xl font-bold text-fg">Checkout</h1>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 <div className="flex flex-col gap-6">
-                    <div className="w-full aspect-square bg-[#F8F9FA] rounded-4xl flex items-center justify-center p-8 border border-gray-50 relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-linear-to-tr from-gray-100 to-transparent opacity-50"></div>
+                    <div className="w-full aspect-square bg-surface-2 rounded-4xl flex items-center justify-center p-8 border border-line relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-linear-to-tr from-surface to-transparent opacity-50"></div>
                         <img
                             src={item.img}
                             alt={item.name}
@@ -53,15 +53,15 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col pt-2 max-w-md">
-                    <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full w-fit mb-4">
+                    <span className="inline-block px-3 py-1 bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400 text-xs font-bold rounded-full w-fit mb-4">
                         In Stock
                     </span>
-                    <h2 className="text-3xl font-extrabold text-gray-900 mb-2 leading-tight">{item.name}</h2>
-                    <p className="text-3xl font-black text-[#5942AA] mb-8">{item.price}</p>
+                    <h2 className="text-3xl font-extrabold text-fg mb-2 leading-tight">{item.name}</h2>
+                    <p className="text-3xl font-black text-accent mb-8">{item.price}</p>
 
                     <div className="mb-10">
                         <div className="flex justify-between items-center mb-4">
-                            <span className="text-sm font-bold text-gray-900">Select Size</span>
+                            <span className="text-sm font-bold text-fg">Select Size</span>
                         </div>
                         <div className="flex gap-3">
                             {SIZES.map((size) => (
@@ -69,8 +69,8 @@ export default function CheckoutPage() {
                                     key={size}
                                     onClick={() => setSelectedSize(size)}
                                     className={`h-14 flex-1 rounded-xl text-base font-bold border transition-all active:scale-95 ${selectedSize === size
-                                        ? "border-[#5942AA] bg-[#5942AA] text-white shadow-md shadow-purple-500/20"
-                                        : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                                        ? "border-accent bg-accent text-on-accent shadow-md shadow-accent/20"
+                                        : "border-line text-muted hover:border-muted hover:bg-surface-2"
                                         }`}
                                 >
                                     {size}
@@ -80,23 +80,23 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="flex flex-col gap-4 mb-10">
-                        <div className="flex items-center gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
-                            <div className="bg-white p-2 rounded-full shadow-sm">
-                                <Truck className="h-5 w-5 text-[#5942AA]" />
+                        <div className="flex items-center gap-4 bg-surface-2 p-4 rounded-2xl border border-line">
+                            <div className="bg-surface p-2 rounded-full shadow-sm">
+                                <Truck className="h-5 w-5 text-accent" />
                             </div>
                             <div>
-                                <p className="text-sm font-bold text-gray-900">Free Delivery</p>
-                                <p className="text-xs text-gray-500">2-4 working days worldwide</p>
+                                <p className="text-sm font-bold text-fg">Free Delivery</p>
+                                <p className="text-xs text-muted">2-4 working days worldwide</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
-                            <div className="bg-white p-2 rounded-full shadow-sm">
-                                <ShieldCheck className="h-5 w-5 text-[#5942AA]" />
+                        <div className="flex items-center gap-4 bg-surface-2 p-4 rounded-2xl border border-line">
+                            <div className="bg-surface p-2 rounded-full shadow-sm">
+                                <ShieldCheck className="h-5 w-5 text-accent" />
                             </div>
                             <div>
-                                <p className="text-sm font-bold text-gray-900">Secure Payment</p>
-                                <p className="text-xs text-gray-500">Upon receiving the order</p>
+                                <p className="text-sm font-bold text-fg">Secure Payment</p>
+                                <p className="text-xs text-muted">Upon receiving the order</p>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
                         <MessageCircle className="h-6 w-6" />
                         Order via WhatsApp
                     </button>
-                    <p className="text-center text-xs text-gray-400 mt-4">
+                    <p className="text-center text-xs text-muted mt-4">
                         No registration required
                     </p>
                 </div>

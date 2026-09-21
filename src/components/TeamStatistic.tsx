@@ -19,15 +19,15 @@ export default function TeamStatistic({ match }: { match: FixtureDetails }) {
 
     if (homeStats.length === 0 && awayStats.length === 0) {
         return (
-            <div className="bg-white rounded-2xl p-6 w-full border border-gray-100 shadow-sm text-center text-gray-500">
+            <div className="bg-surface rounded-2xl p-6 w-full border border-line shadow-sm text-center text-muted">
                 Statistics are not available for this match
             </div>
         );
     }
 
     return (
-        <div className="bg-white rounded-2xl p-6 w-full border border-gray-100 shadow-sm">
-            <h2 className="text-center font-bold text-gray-900 mb-6">Team Statistic</h2>
+        <div className="bg-surface rounded-2xl p-6 w-full border border-line shadow-sm">
+            <h2 className="text-center font-bold text-fg mb-6">Team Statistic</h2>
 
             <div className="flex flex-col gap-5">
                 {ROWS.map(({ label, type, suffix = "" }) => {
@@ -37,10 +37,10 @@ export default function TeamStatistic({ match }: { match: FixtureDetails }) {
 
                     return (
                         <div key={label}>
-                            <p className="text-center text-sm text-gray-500 mb-2">{label}</p>
+                            <p className="text-center text-sm text-muted mb-2">{label}</p>
                             <div className="flex items-center gap-3">
-                                <span className="w-12 font-bold text-gray-900">{home}{suffix}</span>
-                                <div className="flex flex-1 h-1.5 gap-0.5 rounded-full overflow-hidden bg-gray-100">
+                                <span className="w-12 font-bold text-fg">{home}{suffix}</span>
+                                <div className="flex flex-1 h-1.5 gap-0.5 rounded-full overflow-hidden bg-track">
                                     {total > 0 && (
                                         <>
                                             <div className="bg-green-500" style={{ width: `${(home / total) * 100}%` }} />
@@ -48,7 +48,7 @@ export default function TeamStatistic({ match }: { match: FixtureDetails }) {
                                         </>
                                     )}
                                 </div>
-                                <span className="w-12 text-right font-bold text-gray-900">{away}{suffix}</span>
+                                <span className="w-12 text-right font-bold text-fg">{away}{suffix}</span>
                             </div>
                         </div>
                     );

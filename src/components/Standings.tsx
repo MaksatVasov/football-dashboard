@@ -33,18 +33,18 @@ function getResultImage(value: string) {
 
 function getRowBgClass(rank: number, totalTeams: number) {
   if (rank <= 4) {
-    return "bg-[#F2F0F9] hover:bg-[#EAE7F5]";
+    return "bg-accent/10 hover:bg-accent/15";
   }
   if (rank === 5) {
-    return "bg-orange-50 hover:bg-orange-100";
+    return "bg-orange-50 hover:bg-orange-100 dark:bg-orange-500/10 dark:hover:bg-orange-500/15";
   }
   if (rank === 6) {
-    return "bg-emerald-50 hover:bg-emerald-100";
+    return "bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/15";
   }
   if (rank > totalTeams - 3) {
-    return "bg-[#FEE6EB] hover:bg-[#FCDADF]";
+    return "bg-[#FEE6EB] hover:bg-[#FCDADF] dark:bg-rose-500/10 dark:hover:bg-rose-500/15";
   }
-  return "bg-gray-50 hover:bg-gray-100";
+  return "bg-surface-2 hover:bg-surface";
 }
 
 function TableRow({ item, totalTeams }: { item: Standing; totalTeams: number }) {
@@ -56,17 +56,17 @@ function TableRow({ item, totalTeams }: { item: Standing; totalTeams: number }) 
     <div
       className={`grid grid-cols-[30px_minmax(100px,1fr)_1fr_1fr_1fr_1fr] lg:grid-cols-[30px_minmax(100px,2fr)_1fr_1fr_1fr_1fr_2fr] py-4 px-2 items-center rounded-lg transition-colors cursor-pointer ${bgClass}`}
     >
-      <span className="justify-self-start text-black text-[1rem] font-medium">{rank}</span>
-      <span className="text-[#636363] flex gap-2 items-center font-medium">
+      <span className="justify-self-start text-fg text-[1rem] font-medium">{rank}</span>
+      <span className="text-muted flex gap-2 items-center font-medium">
         <img className="w-6 h-6 object-contain" src={logo} alt={name} />
         {name}
       </span>
-      <span className="justify-self-center text-black text-[1rem]">{winCount}</span>
-      <span className="justify-self-center text-black text-[1rem]">{drawCount}</span>
-      <span className="justify-self-center text-black text-[1rem]">{loseCount}</span>
-      <span className="justify-self-center text-black text-[1rem] font-bold">{points}</span>
+      <span className="justify-self-center text-fg text-[1rem]">{winCount}</span>
+      <span className="justify-self-center text-fg text-[1rem]">{drawCount}</span>
+      <span className="justify-self-center text-fg text-[1rem]">{loseCount}</span>
+      <span className="justify-self-center text-fg text-[1rem] font-bold">{points}</span>
 
-      <span className="hidden lg:flex lg:gap-1.5 text-black justify-self-center text-[1rem]">
+      <span className="hidden lg:flex lg:gap-1.5 text-fg justify-self-center text-[1rem]">
         {curForm.map((result, index) => (
           <span key={`${index}_${result}`}>
             <img className="w-5 h-5 object-contain shadow-sm rounded-full" src={getResultImage(result)} alt="result" />
@@ -80,10 +80,10 @@ function TableRow({ item, totalTeams }: { item: Standing; totalTeams: number }) 
 function LayoutOfTable({ arrayOfTeams }: { arrayOfTeams: Standing[] }) {
   if (!Array.isArray(arrayOfTeams) || arrayOfTeams.length === 0) {
     return (
-      <div className="w-full py-12 flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-400 my-2">
+      <div className="w-full py-12 flex flex-col items-center justify-center bg-surface-2 rounded-xl border border-dashed border-line text-muted my-2">
         <span className="text-3xl mb-2">📋</span>
-        <p className="text-sm font-medium text-gray-600">No standings data available</p>
-        <p className="text-xs text-gray-400 mt-1">Standings for this league have not started yet or are unavailable</p>
+        <p className="text-sm font-medium text-fg">No standings data available</p>
+        <p className="text-xs text-muted mt-1">Standings for this league have not started yet or are unavailable</p>
       </div>
     );
   }
@@ -103,26 +103,26 @@ export default function Standings() {
   const tableToRender = Array.isArray(curTable?.standings) ? curTable.standings[0] : [];
 
   return (
-    <section id="standings" className="w-full bg-white pt-8 mb-12 border-t-[3px] border-[#EFEFEF]">
+    <section id="standings" className="w-full bg-surface pt-8 mb-12 border-t-[3px] border-line">
       <div className="flex items-center gap-2 mb-6">
         <Trophy className="w-5 h-5 text-yellow-500" />
-        <h2 className="text-lg font-bold text-gray-900">Standings</h2>
+        <h2 className="text-lg font-bold text-fg">Standings</h2>
       </div>
 
       <div className="flex items-center justify-between mb-6">
         <div className="relative min-w-50">
-          <button onClick={() => setOpen((prev) => !prev)} className="p-1.5 flex gap-1.5 items-center font-medium">
+          <button onClick={() => setOpen((prev) => !prev)} className="p-1.5 flex gap-1.5 items-center font-medium text-fg">
             {curTable?.logo && <img className="w-6 h-6 object-contain" src={curTable.logo} alt={curTable.name} />}
             {curTable?.name || "Select league"}
             <span className={`transition-transform duration-100 ${isOpen ? "rotate-180" : "rotate-0"}`}><ChevronDown /></span>
           </button>
 
           {isOpen && (
-            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-md border border-gray-100 py-1 z-10">
+            <div className="absolute top-full left-0 w-full bg-surface rounded-xl shadow-md border border-line py-1 z-10">
               {TOP_LEAGUES.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-gray-100 cursor-pointer transition-colors"
+                  className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-fg hover:bg-surface-2 cursor-pointer transition-colors"
                   onClick={() => {
                     setLeagueID(item.id);
                     setOpen(false);
@@ -139,13 +139,13 @@ export default function Standings() {
 
       <div className="w-full">
         <div className="grid grid-cols-[30px_minmax(100px,1fr)_1fr_1fr_1fr_1fr] lg:grid-cols-[30px_minmax(100px,2fr)_1fr_1fr_1fr_1fr_2fr] px-2 pb-2">
-          <span className="justify-self-start text-black text-[1rem]"></span>
-          <span className="text-[#636363]">Club</span>
-          <span className="justify-self-center text-black text-[1rem]">W</span>
-          <span className="justify-self-center text-black text-[1rem]">D</span>
-          <span className="justify-self-center text-black text-[1rem]">L</span>
-          <span className="justify-self-center text-black text-[1rem]">PTS</span>
-          <span className="hidden lg:block text-black justify-self-center text-[1rem]">LAST MATCHES</span>
+          <span className="justify-self-start text-fg text-[1rem]"></span>
+          <span className="text-muted">Club</span>
+          <span className="justify-self-center text-fg text-[1rem]">W</span>
+          <span className="justify-self-center text-fg text-[1rem]">D</span>
+          <span className="justify-self-center text-fg text-[1rem]">L</span>
+          <span className="justify-self-center text-fg text-[1rem]">PTS</span>
+          <span className="hidden lg:block text-fg justify-self-center text-[1rem]">LAST MATCHES</span>
         </div>
 
         <LayoutOfTable arrayOfTeams={tableToRender} />
@@ -153,23 +153,23 @@ export default function Standings() {
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 px-2">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#5942AA]"></div>
-          <span className="text-xs font-semibold text-gray-600">Champions League</span>
+          <div className="w-3 h-3 rounded-full bg-accent"></div>
+          <span className="text-xs font-semibold text-muted">Champions League</span>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-          <span className="text-xs font-semibold text-gray-600">Europa League</span>
+          <span className="text-xs font-semibold text-muted">Europa League</span>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-          <span className="text-xs font-semibold text-gray-600">Conference League</span>
+          <span className="text-xs font-semibold text-muted">Conference League</span>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#E11D48]"></div>
-          <span className="text-xs font-semibold text-gray-600">Relegation</span>
+          <span className="text-xs font-semibold text-muted">Relegation</span>
         </div>
       </div>
     </section>

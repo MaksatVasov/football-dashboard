@@ -31,7 +31,7 @@ export default function MainPage() {
   }
 
   return (
-    <main className="max-w-full mt-1.5 mx-auto p-5 bg-white shadow-sm border border-gray-100/80 rounded-3xl lg:max-w-7xl">
+    <main className="max-w-full mt-1.5 mx-auto p-5 bg-surface shadow-sm border border-line rounded-3xl lg:max-w-7xl">
       <div id="dashboard" className="flex flex-col lg:flex-row gap-6 mb-12">
         <FeaturedBanner />
         <LiveMatchWidget />
