@@ -1,58 +1,16 @@
 import { Info, LineChart } from "lucide-react";
-// import { liveStatuses, cancelledStatuses, upcomingStatuses } from "../helpers/";
-import useMatchStatuses from "../hooks/useMatchStatuses";
 import type { Match } from "../types";
 import useRequiredContext from "../hooks/useRequiredContext";
 import { DataContext } from "../contexts/DataContext";
+import { defineMatchStatus } from "../helpers/defineStatus";
 
-function defineMatchStatus(match: Match) {
-    const status = match.fixture.status.short;
 
-    const { liveStatuses, cancelledStatuses, upcomingStatuses } = useMatchStatuses();
-
-    const objOfStatuses = {
-        isLive: false,
-        isCancelled: false,
-        isUpcoming: false,
-        status: ""
-    };
-
-    const isLive = liveStatuses.includes(status.toUpperCase());
-    const isCancelled = cancelledStatuses.includes(status.toUpperCase());
-    const isUpcoming = upcomingStatuses.includes(status.toUpperCase());
-
-    if (isLive) {
-        const { elapsed, extra } = match.fixture.status;
-
-        const baseElapsed = elapsed ?? (match.fixture.periods.second ? 90 : 45);
-
-        objOfStatuses.isLive = true;
-        objOfStatuses.status = extra ? `${baseElapsed}+${extra}` : `${baseElapsed}`;
-
-        return objOfStatuses;
-    }
-
-    if (isCancelled) {
-        objOfStatuses.isCancelled = true;
-        objOfStatuses.status = status;
-
-        return objOfStatuses;
-    }
-
-    if (isUpcoming) {
-        objOfStatuses.isUpcoming = true;
-    }
-
-    objOfStatuses.status = status;
-
-    return objOfStatuses;
-}
 
 export default function MatchRow({ match }: { match: Match }) {
     const matchStatus = defineMatchStatus(match);
     const matchDate = new Date(match.fixture.date);
 
-    const { setLiveMatchID } = useRequiredContext(DataContext);
+    const { setLiveMatchID, setActiveMatch } = useRequiredContext(DataContext);
 
     return (
         <div
@@ -98,7 +56,8 @@ export default function MatchRow({ match }: { match: Match }) {
             <div className="flex items-center justify-end gap-1 md:gap-2 text-gray-400">
                 <button onClick={() => {
                     setLiveMatchID(String(match.fixture.id));
-                    document.getElementById("liveWidget")?.scrollIntoView({behavior: "smooth"});
+                    setActiveMatch(match);
+                    document.getElementById("dashboard")?.scrollIntoView({behavior: "smooth"});
                 }} className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
                     <Info className="w-4 h-4 md:w-5 md:h-5" />
                 </button>

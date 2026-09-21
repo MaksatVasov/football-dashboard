@@ -134,7 +134,9 @@ export interface DataContextType {
     setLoadingDetails: React.Dispatch<React.SetStateAction<boolean>>,
     isLoadingDetails: boolean,
     isRateLimited: boolean,
-    setIsRateLimited: React.Dispatch<React.SetStateAction<boolean>>
+    setIsRateLimited: React.Dispatch<React.SetStateAction<boolean>>,
+    activeMatch: Match | null,
+    setActiveMatch: React.Dispatch<React.SetStateAction<Match | null>>
 
 }
 

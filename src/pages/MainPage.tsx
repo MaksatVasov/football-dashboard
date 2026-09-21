@@ -23,6 +23,7 @@ export default function MainPage() {
   useScrollSpy({
     sectionIds:  SECTION_IDS,
     setActiveSection,
+    isLoadingData
   });
 
   if (isLoadingData) {

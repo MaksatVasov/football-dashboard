@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import type { Tables, League, Data, DataContextType, ServerResponseStandings, LeagueMatches, TeamStats, DataStats } from "../types";
+import type { Tables, League, Data, DataContextType, ServerResponseStandings, LeagueMatches, TeamStats, DataStats, Match } from "../types";
 
 export const DataContext = createContext<DataContextType | null>(null);
 
@@ -7,6 +7,8 @@ export default function DataProvider({ children }: { children: React.ReactNode }
 
   const [isLoadingData, setLoadingData] = useState(true);
   const [data, setData] = useState<LeagueMatches | null>(null);
+
+  const [activeMatch, setActiveMatch] = useState<Match | null>(null)
 
   const [isLoadingDetails, setLoadingDetails] = useState(false);
 
@@ -147,7 +149,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
     const controller = new AbortController();
 
     setLoadingDetails(true);
-
+    console.log(liveMatchID);
     const getMatchForWidget = async () => {
       try {
         const request = await fetch(
@@ -163,6 +165,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
         if (request.status === 429) {
           setIsRateLimited(true);
           setLiveMatchStats(null);
+          setActiveMatch(null);
           return;
         }
 
@@ -173,6 +176,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
         if (data.errors && Object.keys(data.errors).length > 0) {
           setIsRateLimited(true);
           setLiveMatchStats(null);
+          setActiveMatch(null);
           return;
         }
 
@@ -201,7 +205,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
 
   return (
     
-    <DataContext.Provider value={{ isLoadingData, data, setData, setLeagueID, setLeagueTables, leagueTables, curTable, setLiveMatchID, liveMatchStats, liveMatchID, setLoadingDetails, isLoadingDetails, isRateLimited, setIsRateLimited }}>
+    <DataContext.Provider value={{ isLoadingData, data, setData, setLeagueID, setLeagueTables, leagueTables, curTable, setLiveMatchID, liveMatchStats, liveMatchID, setLoadingDetails, isLoadingDetails, isRateLimited, setIsRateLimited, activeMatch, setActiveMatch }}>
       {children}
     </DataContext.Provider>
   );
