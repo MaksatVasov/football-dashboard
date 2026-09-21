@@ -60,7 +60,7 @@ export default function FollowClub() {
               {renderReadyTeams.map((club) => {
                 const teamLogo = club.team.logo;
                 const teamId = club.team.id;
-                const isFollowed = followedClubs.includes(teamId);
+                const isFollowed = followedClubs.some((item) => item.id === club.team.id);
 
                 return (
                   <button
@@ -68,7 +68,7 @@ export default function FollowClub() {
                     type="button"
                     className={`h-31 w-31 shrink-0 rounded-full bg-[#F6F6F6] p-7 transition-all hover:scale-95 ${isFollowed ? "outline-[3px] outline-purple-700" : ""
                       }`}
-                    onClick={() => toggleFollow(teamId)}
+                    onClick={() => toggleFollow(club.team)}
                   >
                     <img className="w-17 h-17 object-contain" src={teamLogo} alt={club.team.name} />
                   </button>

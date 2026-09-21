@@ -18,7 +18,7 @@ export const router = createBrowserRouter([{
             element: <MainPage />
         },
         {
-            path: "/match",
+            path: "/match/:id",
             element: <MatchDetails />
         },
         {

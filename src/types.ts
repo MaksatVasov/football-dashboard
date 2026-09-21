@@ -55,12 +55,23 @@ interface AllGames {
 }
 
 export interface Team {
-    id: number,
-    logo: string,
-    name: string
+    id: number;
+    logo: string;
+    name: string;
 }
 
-export type FollowedClubs = number[];
+export type FollowedClubs = Team[];
+
+export const isTeam = (item: unknown): item is Team => {
+    if (typeof item !== "object" || item === null) return false;
+
+    const team = item as Record<string, unknown>;
+    return (
+        typeof team['id'] === "number" &&
+        typeof team['logo'] === "string" &&
+        typeof team['name'] === "string"
+    );
+};
 
 
 export interface Data {
@@ -175,4 +186,48 @@ export interface TeamStats {
         type: string;
         value: string;
     })[];
+}
+
+export interface FixtureEvent {
+    time: { elapsed: number; extra: number | null };
+    team: Team;
+    player: { id: number | null; name: string | null };
+    assist?: { id: number | null; name: string | null } | undefined;
+    type: string;
+    detail: string;
+}
+
+export interface LineupPlayer {
+    id: number;
+    name: string;
+    number: number;
+    pos: string;         
+    grid: string | null; 
+}
+
+export interface Lineup {
+    team: Team;
+    formation: string | null;
+    startXI: { player: LineupPlayer }[];
+    substitutes: { player: LineupPlayer }[];
+}
+
+export interface MatchPlayers {
+    team: Team;
+    players: {
+        player: { id: number; name: string; photo: string };
+        statistics: { games: { rating: string | null } }[];
+    }[];
+}
+
+export interface FixtureDetails {
+    fixture: Fixture & {
+        venue: { name: string | null; city: string | null };
+    };
+    teams: { home: Team; away: Team };
+    goals: { home: number | null; away: number | null };
+    events: FixtureEvent[];
+    lineups: Lineup[];
+    statistics: TeamStats[];
+    players: MatchPlayers[];
 }

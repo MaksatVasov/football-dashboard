@@ -3,6 +3,7 @@ import type { Match } from "../types";
 import useRequiredContext from "../hooks/useRequiredContext";
 import { DataContext } from "../contexts/DataContext";
 import { defineMatchStatus } from "../helpers/defineStatus";
+import { Link } from "react-router-dom";
 
 
 
@@ -57,13 +58,13 @@ export default function MatchRow({ match }: { match: Match }) {
                 <button onClick={() => {
                     setLiveMatchID(String(match.fixture.id));
                     setActiveMatch(match);
-                    document.getElementById("dashboard")?.scrollIntoView({behavior: "smooth"});
+                    document.getElementById("dashboard")?.scrollIntoView({ behavior: "smooth" });
                 }} className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
                     <Info className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
-                <button className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
+                <Link to={`/match/${match.fixture.id}`} className="p-1 md:p-1.5 hover:text-gray-700 transition-colors">
                     <LineChart className="w-4 h-4 md:w-5 md:h-5" />
-                </button>
+                </Link>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useRequiredContext from "./useRequiredContext";
 import { DataContext } from "../contexts/DataContext";
 import { FollowedClubsContext } from "../contexts/FollowedClubsContext";
+import type { Team } from "../types";
 
 export function useFollowClub() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -46,11 +47,11 @@ export function useFollowClub() {
     });
   };
 
-  const toggleFollow = (teamId: number) => {
-    if (followedClubs.includes(teamId)) {
-      setFollowClub(followedClubs.filter((item) => item !== teamId));
+  const toggleFollow = (team: Team) => {
+    if (followedClubs.some((item) => item.id === team.id)) {
+      setFollowClub(followedClubs.filter((item) => item.id !== team.id));
     } else {
-      setFollowClub((prev) => [...prev, teamId]);
+      setFollowClub((prev) => [...prev, team]);
     }
   };
 

@@ -1,23 +1,21 @@
 import { createContext, useEffect, useState } from "react";
-import type { FollowedClubs, FollowedClubsContextType } from "../types";
+import { isTeam, type FollowedClubs, type FollowedClubsContextType } from "../types";
 
 export const FollowedClubsContext = createContext<FollowedClubsContextType | null>(null)
 
 export default function FollowedClubsProvider({ children }: { children: React.ReactNode }) {
 
     const [followedClubs, setFollowClub] = useState<FollowedClubs>((): FollowedClubs => {
-
-        let followedClubs;
         try {
-            followedClubs = JSON.parse(localStorage.getItem("followed_clubs") ?? "[]");
-            if (Array.isArray(followedClubs) && followedClubs.every((item) => typeof item === "number")) {
-                return followedClubs;
+            const parsed: unknown = JSON.parse(localStorage.getItem("followed_clubs") ?? "[]");
+
+            if (Array.isArray(parsed) && parsed.every(isTeam)) {
+                return parsed;
             }
             return [];
-        } catch (error) {
+        } catch {
             return [];
         }
-
     });
 
     useEffect(() => {

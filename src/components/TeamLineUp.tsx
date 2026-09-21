@@ -1,55 +1,46 @@
-const HOME_TEAM = [
-  { id: 1, role: "GK", name: "Diogo Costa" },
-  { id: 2, role: "DF", name: "Danilo Pereira" },
-  { id: 3, role: "DF", name: "Pepe" },
-  { id: 4, role: "DF", name: "Rúben Dias" },
-  { id: 5, role: "MF", name: "Bernardo Silva" },
-  { id: 6, role: "MF", name: "Bruno .F" },
-  { id: 7, role: "MF", name: "João Palhinha" },
-  { id: 8, role: "MF", name: "Nuno Mendes" },
-  { id: 9, role: "FW", name: "C. Ronaldo" },
-  { id: 10, role: "FW", name: "João Félix" },
-  { id: 11, role: "FW", name: "Ricardo Horta" },
-];
+import type { FixtureDetails } from "../types";
 
-const AWAY_TEAM = [
-  { id: 1, role: "GK", name: "T. Courtois" },
-  { id: 2, role: "DF", name: "Wout Faes" },
-  { id: 3, role: "DF", name: "T. Meunier" },
-  { id: 4, role: "DF", name: "A. Theate" },
-  { id: 5, role: "MF", name: "Kevin D.B" },
-  { id: 6, role: "MF", name: "Axel Witsel" },
-  { id: 7, role: "MF", name: "H. Vanaken" },
-  { id: 8, role: "MF", name: "A. Onana" },
-  { id: 9, role: "FW", name: "R. Lukaku" },
-  { id: 10, role: "FW", name: "E. Hazard" },
-  { id: 11, role: "FW", name: "D. Mertens" },
-];
+const POS_LABEL: Record<string, string> = { G: "GK", D: "DF", M: "MF", F: "FW" };
 
-export default function TeamLineUp() {
-  return (
-    <div className="bg-white rounded-2xl p-6 w-full mt-4 border border-gray-100 shadow-sm">
-      <h2 className="text-gray-900 font-bold mb-6">Line Ups</h2>
+export default function TeamLineUp({ match }: { match: FixtureDetails }) {
+    const home = match.lineups?.find((l) => l.team.id === match.teams.home.id);
+    const away = match.lineups?.find((l) => l.team.id === match.teams.away.id);
 
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-3 pr-4">
-          {HOME_TEAM.map((player) => (
-            <div key={player.id} className="flex gap-2 items-center text-[13px]">
-              <span className="text-green-600 font-bold w-5">{player.role}</span>
-              <span className="text-gray-700 truncate">{player.name}</span>
+    if (!home || !away) {
+        return (
+            <div className="bg-white rounded-2xl p-6 w-full mt-4 border border-gray-100 shadow-sm text-center text-gray-500">
+                Line ups are not available for this match
             </div>
-          ))}
-        </div>
-        <div className="w-px bg-gray-200 self-stretch" />
-        <div className="flex flex-col gap-3 pl-2">
-          {AWAY_TEAM.map((player) => (
-            <div key={player.id} className="flex justify-end gap-2 items-center text-[13px]">
-              <span className="text-gray-700 truncate text-right">{player.name}</span>
-              <span className="text-[#7F1D1D] font-bold w-5 text-right">{player.role}</span>
+        );
+    }
+
+    return (
+        <div className="bg-white rounded-2xl p-6 w-full mt-4 border border-gray-100 shadow-sm">
+            <h2 className="text-gray-900 font-bold mb-6">Line Ups</h2>
+
+            <div className="flex justify-between">
+                <div className="flex flex-col gap-3 pr-4">
+                    {home.startXI.map(({ player }) => (
+                        <div key={player.id} className="flex gap-2 items-center text-[13px]">
+                            <span className="text-green-600 font-bold w-5">{POS_LABEL[player.pos] ?? player.pos}</span>
+                            <span className="text-gray-400 w-5">{player.number}</span>
+                            <span className="text-gray-700 truncate">{player.name}</span>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="w-px bg-gray-200 self-stretch" />
+
+                <div className="flex flex-col gap-3 pl-2">
+                    {away.startXI.map(({ player }) => (
+                        <div key={player.id} className="flex justify-end gap-2 items-center text-[13px]">
+                            <span className="text-gray-700 truncate text-right">{player.name}</span>
+                            <span className="text-gray-400 w-5 text-right">{player.number}</span>
+                            <span className="text-[#7F1D1D] font-bold w-5 text-right">{POS_LABEL[player.pos] ?? player.pos}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
-          ))}
         </div>
-      </div>
-    </div>
-  );
+    );
 }
