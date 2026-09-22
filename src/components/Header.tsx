@@ -3,6 +3,7 @@ import logo from "../assets/images/header/Logo-header.svg";
 import unauthorizedUser from "../assets/images/header/unauthorized-user.png";
 import { Sun, Moon, ShoppingBag } from "lucide-react";
 import useTheme from "../hooks/useTheme";
+import { Link } from "react-router-dom";
 
 export default function Header() {
     const { isDark, toggle } = useTheme();
@@ -41,9 +42,9 @@ export default function Header() {
                         {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                     </button>
 
-                    <button type="button">
+                    <Link to="/profile">
                         <img src={unauthorizedUser} className="w-8 h-8 rounded-full object-cover border border-amber-100" alt="User Profile" />
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -64,9 +65,9 @@ export default function Header() {
                     </button>
                 </div>
 
-                <button type="button">
+                <Link to="/profile">
                     <img src={unauthorizedUser} className="w-10 h-10 rounded-full object-cover border border-amber-100" alt="User Profile" />
-                </button>
+                </Link>
             </div>
 
         </header>

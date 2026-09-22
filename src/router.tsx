@@ -7,6 +7,7 @@ import NewsArticlePage from "./pages/NewsPage";
 import TermsOfServicePage from "./pages/TermsOfService";
 import PrivacyPolicyPage from "./pages/Privacy";
 import FavoritesPage from "./pages/FavoritesPage";
+import ProfilePage from "./pages/ProfilePage";
 
 export const router = createBrowserRouter([{
 
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([{
         {
             path: "favorites",
             element: <FavoritesPage />
+        },
+        {
+            path: "profile",
+            element: <ProfilePage />
         }
     ]
 
