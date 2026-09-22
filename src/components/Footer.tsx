@@ -12,7 +12,9 @@ export default function Footer() {
           <Link to={"privacy-policy"} className="hover:text-fg transition-colors">
             Privacy & Data Policy
           </Link>
+          <a href="https://www.flaticon.com/free-icons/isometric" title="isometric icons">Isometric icons created by Nsit - Flaticon</a>
         </div>
+
 
 
         <div className="text-[14px] font-medium text-muted text-center md:text-right">
