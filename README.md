@@ -91,7 +91,3 @@ npm run dev
 - No backend: the API key is used client-side, which is fine for a portfolio project but not for production use.
 
 ---
-
-## License
-
-MIT
