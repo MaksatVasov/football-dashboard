@@ -89,5 +89,3 @@ npm run dev
 - Free API tier: 100 requests/day, resets at 00:00 UTC.
 - Statistics, lineups, and formation data aren't available for every league/match (depends on API coverage).
 - No backend: the API key is used client-side, which is fine for a portfolio project but not for production use.
-
----
